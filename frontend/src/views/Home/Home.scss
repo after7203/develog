@@ -1,0 +1,115 @@
+.home {
+    font-size: 24px;
+    padding: 10px 0 0 0;
+    background-color: #f8f8f8;
+    height: 100vh;
+    .menu {
+        display: flex;
+        justify-content: center;
+        margin: 0 auto 2rem auto;
+        width: 85rem;
+
+        @media (max-width: 1424px) {
+            min-width: 451px;
+            width: 1007px;
+        }
+    
+        @media (max-width: 1072px) {
+            width: calc(100% - 2rem);
+            margin: 0 1rem 2rem 1rem;
+        }
+
+        .filter {
+            display: flex;
+            align-items: center;
+            height: 3rem;
+
+            .trend {
+                width: 6rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0 1rem 0 1rem;
+                font-size: 1.2rem;
+                border-bottom: 2px solid black;
+                height: 100%;
+
+                .string {
+                    font-size: 1.1rem;
+                    font-weight: bold;
+                    margin: 0 0 0 0.4rem;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            .new {
+                width: 6rem;
+                color: #666;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0 1rem 0 1rem;
+                font-size: 1.2rem;
+                height: 100%;
+
+                .string {
+                    font-size: 1.1rem;
+                    //font-weight: bold;
+                    margin: 0 0 0 0.4rem;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            .period {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                width: 7rem;
+                height: 2rem;
+                //margin: 0 1rem 0 1rem;
+                font-size: 1rem;
+                color: #444;
+                font-weight: bold;
+                background: #fff;
+                border: none;
+
+                &:hover {
+                    cursor: pointer;
+                    opacity: 70%;
+                }
+            }
+
+
+        }
+
+        .blank {
+            flex-grow: 1;
+        }
+
+        .more {
+            color: #666;
+            margin: auto;
+            &:hover {
+                cursor: pointer;
+                color: #333;
+            }
+        }
+    }
+    .home-previews{
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        //width: 100vw;
+        margin: 0 5rem 0 5rem;
+
+        @media (max-width: 1600px) {
+            margin: 0 auto;
+        }
+    }
+}

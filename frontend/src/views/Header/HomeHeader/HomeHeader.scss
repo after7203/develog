@@ -1,0 +1,85 @@
+header {
+    display: flex;
+    width: 85rem;
+    height: 70px;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 2rem auto;
+
+    @media (max-width: 1424px) {
+        min-width: 451px;
+        width: 1007px;
+    }
+
+    @media (max-width: 1072px) {
+        width: calc(100% - 2rem);
+        margin: 0 1rem 2rem 1rem;
+    }
+
+    a {
+        display: flex;
+        align-items: center;
+    }
+
+    .logo {
+        width: 100px;
+        height: auto;
+        margin: 0 0 0 2rem;
+    }
+
+    .blank {
+        flex-grow: 1;
+    }
+
+    .svg_bg {
+        flex: 0 0 auto;
+        width: 2.5rem;
+        height: 2.5rem;
+        margin: 0.1rem;
+        border-radius: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &:hover {
+            background: #eee;
+            cursor: pointer;
+        }
+    }
+
+    .search.bi.bi-search {
+        margin: 10px;
+    }
+
+    .write-btn {
+        margin: 10px;
+        border: 1px solid;
+        border-radius: 1rem;
+        padding: 0.3rem 1rem 0.3rem 1rem;
+        font-size: 1rem;
+        font-weight: bold;
+        flex: 0 0 auto;
+        color: #222;
+        transition: all 0.125s ease-in 0s;
+        &:hover {
+            background: #000;
+            color: #fff;
+            cursor: pointer;
+        }
+    }
+
+    .profile-img {
+        margin: 10px;
+        width: 40px;
+        height: 40px;
+        border-radius: 2rem;
+    }
+
+    .bi.bi-caret-down-fill {
+        color: #666;
+        margin: 0 2rem 0 0;
+        &:hover {
+            color: #333;
+            cursor: pointer;
+        }
+    }
+}

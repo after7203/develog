@@ -1,0 +1,111 @@
+.home-preview {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 20rem;
+    height: 25rem;
+    margin: 1.5rem 1rem;
+    background: white;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 16px 0px;
+    transition-duration: 0.25s;
+    &:hover {
+        cursor: pointer;
+        transform: translateY(-8px);
+    }
+
+    @media (max-width: 1072px) {
+        flex: 1 0 calc(50% - 2rem);
+        height: calc((50% - 2rem)*1.25);
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 12px 20px 0px;
+    }
+
+    @media (max-width: 767px) {
+        flex: 1 0 calc(100% - 2rem);
+        //margin: 0px;
+        //width: 100%;
+    }
+
+    //white-space: nowrap;
+    //text-overflow: ellipsis;
+    //border: 1px solid black;
+    .thumbnail {
+        width: 100%;
+        height: 40%;
+        //border-radius: 0.5rem 0.5rem 0 0 ;
+    }
+
+    .title {
+        flex: 0 0 auto;
+        //flex-basis: 10rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin: 1rem 0.7rem 0.5rem 0.7rem;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    .content {
+        color: #333;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        flex: 0 0 auto;
+        //flex-basis: 10rem;
+        overflow: hidden;
+        //white-space: nowrap;
+        text-overflow: ellipsis;
+        margin: 0rem 0.5rem 2rem 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .day-reply {
+        color: #888;
+        font-size: 0.8rem;
+        margin: 0rem 0.7rem 1.5rem 0.7rem;
+        letter-spacing: 0.05rem
+    }
+
+    .below-info {
+        display: flex;
+        flex-direction: row;
+        flex: 1 0 auto;
+        align-items: center;
+        justify-content: space-between;
+        height: 3rem;
+        margin: 0rem 1rem 0rem 1rem;
+        padding: 0 0 0 0;
+        border-top: 1px solid #eee;
+        font-size: 0.8rem;
+
+        .bi-left {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            color: #111;
+
+            .bi-thumb {
+                width: 1.5rem;
+                height: 1.5rem;
+                border-radius: 1rem;
+                margin: 0 0.5rem 0 0;
+            }
+
+            .by {
+                margin: 0 0.3rem 0 0;
+                color: #aaa;
+            }
+        }
+
+        .bi-right {
+            color: #111;
+            display: flex;
+            align-items: center;
+
+            svg {
+                margin: 0.2rem 0.5rem 0 0.5rem;
+            }
+        }
+    }
+}
