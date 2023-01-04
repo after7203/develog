@@ -1,9 +1,38 @@
 import { useEffect } from "react";
-import { Form } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Form, Link, Navigate, useNavigate } from "react-router-dom";
 import "./LoginModal.scss"
+import axios from 'axios'
+import { useState } from "react";
+import { userContext } from "../../App";
+import { useContext } from "react";
 
-function LoginModal({loginToggle, toggleLoginModal, loginRef}) {
-    
+function LoginModal({ loginToggle, toggleLoginModal, loginRef }) {
+    const { register, handleSubmit, formState: { isSubmitting }, } = useForm()
+    const [id, setId] = useState("default")
+    const [pw, setPw] = useState("default")
+    const [error, setError] = useState(false)
+    const {user, setUser} = useContext(userContext)
+
+    const onSubmit = async (data) => {
+        setError(false)
+        setId(data.id)
+        setPw(data.pw)
+        if (id && pw) {
+            var res = await axios.post("/api/users/login", data)
+        }
+        else {
+            return;
+        }
+        if (res.data.success) {
+            setUser(data.id)
+            toggleLoginModal()
+        }
+        else {
+            setError(true)
+        }
+    }
+
     return (
         <div className={loginToggle ? "login_modal_bg on" : "login_modal_bg off"}>
             <div className="login_modal" ref={loginRef}>
@@ -16,11 +45,15 @@ function LoginModal({loginToggle, toggleLoginModal, loginRef}) {
                         <svg className="exit_btn" onClick={toggleLoginModal} stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" tabindex="1" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
                     </div>
                     <h1>로그인</h1>
-                    <h4>이메일로 로그인</h4>
-                    <Form method="post">
-                        <input type="text" placeholder="이메일을 입력하세요." name="email" />
-                        <button type="submit">로그인</button>
-                    </Form>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <h4>아이디</h4>
+                        <input type="text" placeholder="아이디를 입력하세요." {...register("id")} />
+                        {id == "" && <h5>아이디를 입력해주세요</h5>}
+                        <h4>비밀번호</h4>
+                        <input type="password" placeholder="비밀번호를 입력하세요." {...register("pw")} />
+                        {pw == "" ? <h5>비밀번호를 입력해주세요</h5> : error && <h5>아이디 또는 비밀번호를 확인해주세요</h5>}
+                        <button type="submit" disabled={isSubmitting}>로그인</button>
+                    </form>
                     <h4>소셜 계정으로 로그인</h4>
                     <div className="btn_group">
                         <div className="github_btn">
@@ -35,7 +68,7 @@ function LoginModal({loginToggle, toggleLoginModal, loginRef}) {
                     </div>
                     <div className="foot">
                         <span>아직 회원이 아니신가요?</span>
-                        <span className="signup_btn">회원가입</span>
+                        <Link to="register" className="signup_btn">회원가입</Link>
                     </div>
                 </div>
 

@@ -1,7 +1,10 @@
 {
   "scripts": {
     "f": "cd frontend && yarn start",
-    "b": "cd backend && yarn dev",
-    "dev": "concurrently \"cd backend && yarn dev\" \"cd frontend && yarn start\" "
+    "b": "cd backend && nodemon index.js",
+    "dev": "cd /projects/develog && concurrently \"cd backend && nodemon index.js\" \"cd frontend && yarn start\" "
+  },
+  "dependencies": {
+    "concurrently": "^7.6.0"
   }
 }

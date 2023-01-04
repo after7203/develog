@@ -1,5 +1,5 @@
 import {
-  Link
+  Link, Outlet
 } from 'react-router-dom'
 import './Home.scss';
 import HomeHeader from '../Header/HomeHeader/HomeHeader';
