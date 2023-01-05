@@ -7,3 +7,5 @@ const UserHome = () => {
         </div>
     )
 }
+
+export default UserHome

@@ -9,6 +9,7 @@ const App = () => {
     const [user, setUser] = useState(false)
     useEffect(() => {
         setUser(localStorage.getItem("user"))
+        console.log(process.env.NODE_ENV)
     }, [])
     return (
         <userContext.Provider value={{ user, setUser }}>
