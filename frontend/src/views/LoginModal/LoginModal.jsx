@@ -19,7 +19,7 @@ function LoginModal({ loginToggle, toggleLoginModal, loginRef }) {
         setId(data.id)
         setPw(data.pw)
         if (id && pw) {
-            var res = await axios.post(`/api/users/login`, data)
+            var res = await axios.post(`https://develog-after7203.koyeb.app/api/users/login`, data)
         }
         else {
             return;
