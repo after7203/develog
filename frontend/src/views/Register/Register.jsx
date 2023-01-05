@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import axios from 'axios'
 import "./Register.scss"
 import { useContext, useState } from "react";
-import { baseURI, userContext } from "../../App";
+import { userContext } from "../../App";
 
 const Register = () => {
     const { register, handleSubmit, formState: { isSubmitting }, } = useForm({ mode: "onChange" })
@@ -31,7 +31,7 @@ const Register = () => {
             setErrorPwConfirm("비밀번호가 일치하지 않습니다")
         }
         if(id&&pw&&pw==pw_confirm){
-            const res = await axios.post(`${baseURI}/api/users/register`, {id:id, pw:pw})
+            const res = await axios.post(`/api/users/register`, {id:id, pw:pw})
             if(res.data.success){
                 setUser(id)
                 navigate("/")
