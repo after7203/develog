@@ -4,7 +4,7 @@ import { Form, Link, Navigate, useNavigate } from "react-router-dom";
 import "./LoginModal.scss"
 import axios from 'axios'
 import { useState } from "react";
-import { userContext } from "../../App";
+import { baseURI, userContext } from "../../App";
 import { useContext } from "react";
 
 function LoginModal({ loginToggle, toggleLoginModal, loginRef }) {
@@ -19,13 +19,14 @@ function LoginModal({ loginToggle, toggleLoginModal, loginRef }) {
         setId(data.id)
         setPw(data.pw)
         if (id && pw) {
-            var res = await axios.post("/api/users/login", data)
+            var res = await axios.post(`${baseURI}/api/users/login`, data)
         }
         else {
             return;
         }
         if (res.data.success) {
             setUser(data.id)
+            localStorage.setItem("user",data.id);
             toggleLoginModal()
         }
         else {

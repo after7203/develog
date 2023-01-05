@@ -6,8 +6,8 @@ const bodyParser = require('body-parser')
 
 const mongodb = require("mongodb");
 const mongoose = require('mongoose');
-const uri = "mongodb+srv://after7203:after7203@cluster0.qpvsj7r.mongodb.net/?retryWrites=true&w=majority";
-mongoose.connect(uri, {dbName: 'develog'}).then(console.log("mongodb connected"))
+const {mongoURI} = require("./config/key");
+mongoose.connect(mongoURI, {dbName: 'develog'}).then("mongodb connect")
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));

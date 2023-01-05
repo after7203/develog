@@ -59,7 +59,7 @@ function HomeHeader({ toggleLoginModal }) {
                 <div className='userMenuParent'>
                     <div className='userMenu' ref={userMenuRef}>
                         <div>내 디벨로그</div>
-                        <div onClick={()=>{setUser(false); setUserMenu(false)}}>로그아웃</div>
+                        <div onClick={()=>{setUser(false); setUserMenu(false); localStorage.removeItem("user");}}>로그아웃</div>
                     </div>
                 </div>
             }
