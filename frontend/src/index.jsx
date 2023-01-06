@@ -10,13 +10,20 @@ import './index.css';
 import Home from './views/Home/Home.jsx'
 import Register from './views/Register/Register';
 import App from './App';
+import Header from './views/Header/Header';
+import UserHome from './views/UserHome/UserHome';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route element={<App/>}>
-      <Route path="/" element={<Home />}/>
-      <Route path="/register" element={<Register />}/>
-    </Route>
+    <>
+      <Route path="/" element={<App />}>
+        <Route path="/" element={<Header />}>
+          <Route index element={<Home />}/>
+          <Route path="/:user" element={<UserHome/>}/>
+        </Route>
+        <Route path="/register" element={<Register />} />
+      </Route>
+    </>
   )
 );
 

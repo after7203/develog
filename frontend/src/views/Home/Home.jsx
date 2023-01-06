@@ -2,33 +2,15 @@ import {
   Link, Outlet
 } from 'react-router-dom'
 import './Home.scss';
-import HomeHeader from '../Header/HomeHeader/HomeHeader';
 import HomePreview from '../../components/HomePreview/HomePreview';
 import LoginModal from '../LoginModal/LoginModal';
 import { useRef, useState } from 'react';
 
 function Home() {
-  const [loginToggle, setLoginToggle] = useState(false)
-  const loginRef = useRef();
-  const toggleLoginModal = () => {
-    const target = loginRef.current;
-    if (loginToggle) {
-      target.classList.remove("on")
-      void target.offsetWidth;
-      target.classList.add("off")
-    }
-    else {
-      target.classList.remove("off")
-      void target.offsetWidth;
-      target.classList.add("on")
-    }
-    setLoginToggle(!loginToggle);
-  }
-
+  
   return (
     <>
       <div className='home'>
-        <HomeHeader toggleLoginModal={toggleLoginModal}/>
         <div className='menu'>
           <div className='filter'>
             <div className='trend'>
@@ -67,7 +49,6 @@ function Home() {
           <HomePreview />
         </div>
       </div>
-      <LoginModal loginToggle={loginToggle} toggleLoginModal={toggleLoginModal} loginRef={loginRef} />
     </>
   );
 }

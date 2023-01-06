@@ -1,0 +1,12 @@
+.userHome{
+    display: flex;
+    .left{
+        width: 30%;
+        height: 100%;
+        border: 1px solid black;
+    }
+    .center{
+        width: 40%;
+        height: 100%;
+    }
+}
