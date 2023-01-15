@@ -1,12 +1,102 @@
-.userHome{
+.userHome {
     display: flex;
-    .left{
-        width: 30%;
+    justify-content: center;
+    height: 100vh;
+
+    .left {
+        box-sizing: border-box;
+        padding: 2rem;
         height: 100%;
-        border: 1px solid black;
     }
-    .center{
-        width: 40%;
+
+    .center {
+        box-sizing: border-box;
+        padding: 2rem;
+        width: 50rem;
         height: 100%;
+
+        .introduce {
+            display: flex;
+            padding: 2rem;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 6rem;
+
+            img {
+                width: 8rem;
+                height: 8rem;
+                border-radius: 100%;
+            }
+
+            div {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                height: 8rem;
+                box-sizing: border-box;
+                padding: 1rem;
+
+                * {
+                    margin: 0.2rem;
+                    color: #333
+                }
+
+                h2 {
+                    font-weight: 600;
+                }
+
+                h3 {
+                    font-weight: 400;
+                }
+            }
+
+        }
+
+        .menu {
+            display: flex;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #555;
+
+            div {
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                width: 8rem;
+                transition-duration: 0.3s;
+            }
+
+            &.article {
+                .article {
+                    color: rgb(28, 199, 170)
+                }
+                .below_line {
+                    transform: translateX(-8rem);
+                }
+            }
+
+            &.series {
+                .series {
+                    color: rgb(28, 199, 170)
+                }
+            }
+
+            &.introduce_tap {
+                .introduce_tap {
+                    color: rgb(28, 199, 170)
+                }
+                .below_line {
+                    transform: translateX(8rem);
+                }
+            }
+
+            .below_line {
+                width: 8rem;
+                height: 2.5rem;
+                position: absolute;
+                border-bottom: 2px solid rgb(28, 199, 170);
+                transition-duration: 0.3s;
+            }
+        }
     }
 }

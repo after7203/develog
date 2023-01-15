@@ -12,7 +12,7 @@ function LoginModal({ loginToggle, toggleLoginModal, loginRef }) {
     const [id, setId] = useState("default")
     const [pw, setPw] = useState("default")
     const [error, setError] = useState(false)
-    const {user, setUser} = useContext(userContext)
+    const { user, setUser } = useContext(userContext)
 
     const onSubmit = async (data) => {
         setError(false)
@@ -26,7 +26,14 @@ function LoginModal({ loginToggle, toggleLoginModal, loginRef }) {
         }
         if (res.data.success) {
             setUser(data.id)
-            localStorage.setItem("user",data.id);
+            if(document.getElementsByClassName('autologin')[0].checked){
+                localStorage.setItem("user", data.id);
+                localStorage.setItem("token", res.data.token);
+            }
+            else{
+                sessionStorage.setItem("user", data.id);
+                sessionStorage.setItem("token", res.data.token);
+            }
             toggleLoginModal()
         }
         else {
@@ -48,11 +55,15 @@ function LoginModal({ loginToggle, toggleLoginModal, loginRef }) {
                     <h1>로그인</h1>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <h4>아이디</h4>
-                        <input type="text" placeholder="아이디를 입력하세요." {...register("id")} />
+                        <input className="id" type="text" placeholder="아이디를 입력하세요." {...register("id")} />
                         {id == "" && <h5>아이디를 입력해주세요</h5>}
                         <h4>비밀번호</h4>
-                        <input type="password" placeholder="비밀번호를 입력하세요." {...register("pw")} />
+                        <input className="pw" type="password" placeholder="비밀번호를 입력하세요." {...register("pw")} />
                         {pw == "" ? <h5>비밀번호를 입력해주세요</h5> : error && <h5>아이디 또는 비밀번호를 확인해주세요</h5>}
+                        <div className="wrapper_autologin">
+                            <input className="autologin " type="checkbox" id="autologin" />
+                            <label for="autologin" className="labl-autologin">로그인 상태 유지</label>
+                        </div>
                         <button type="submit" disabled={isSubmitting}>로그인</button>
                     </form>
                     <h4>소셜 계정으로 로그인</h4>

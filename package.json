@@ -5,6 +5,7 @@
     "dev": "cd /projects/develog && concurrently \"cd backend && nodemon index.js\" \"cd frontend && yarn start\" "
   },
   "dependencies": {
+    "@toast-ui/react-editor": "3.2.2",
     "concurrently": "^7.6.0"
   }
 }

@@ -36,6 +36,9 @@ const Register = () => {
                 setUser(id)
                 navigate("/")
             }
+            else{
+                setErrorID("이미 존재하는 아이디입니다")
+            }
         }
     }
 

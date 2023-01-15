@@ -1,5 +1,5 @@
 import {
-    Link, Outlet
+    Link, Outlet, useNavigate
 } from 'react-router-dom'
 import './Header.scss'
 import { userContext } from '../../App';
@@ -16,19 +16,20 @@ function Header() {
     const userMenuBtnRef = useRef()
     const [loginToggle, setLoginToggle] = useState(false)
     const loginRef = useRef();
+    const navigate = useNavigate()
     const toggleLoginModal = () => {
-      const target = loginRef.current;
-      if (loginToggle) {
-        target.classList.remove("on")
-        void target.offsetWidth;
-        target.classList.add("off")
-      }
-      else {
-        target.classList.remove("off")
-        void target.offsetWidth;
-        target.classList.add("on")
-      }
-      setLoginToggle(!loginToggle);
+        const target = loginRef.current;
+        if (loginToggle) {
+            target.classList.remove("on")
+            void target.offsetWidth;
+            target.classList.add("off")
+        }
+        else {
+            target.classList.remove("off")
+            void target.offsetWidth;
+            target.classList.add("on")
+        }
+        setLoginToggle(!loginToggle);
     }
 
     const handleClickOutside = ({ target }) => {
@@ -36,6 +37,13 @@ function Header() {
             setUserMenu(false);
         }
     };
+
+    const handleLogout = () => {
+        setUser(false)
+        setUserMenu(false)
+        localStorage.removeItem("user"); localStorage.removeItem("token")
+        sessionStorage.removeItem("user"); sessionStorage.removeItem("token")
+    }
 
     useEffect(() => {
         window.addEventListener("click", handleClickOutside);
@@ -64,12 +72,12 @@ function Header() {
                 </div>}
                 {user &&
                     <>
-                        <div className="write-btn">
+                        <div className="write-btn" onClick={()=>navigate('/write')}> 
                             새 글 작성
                         </div>
                         <Link to="/"><img className="profile-img" src={require("../../asset/profile_1.png")} /></Link>
                         <svg ref={userMenuBtnRef} onClick={() => { setUserMenu((prev) => !prev) }} xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                            <path d ="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
                         </svg>
                     </>
                 }
@@ -77,7 +85,7 @@ function Header() {
                     <div className='userMenuParent'>
                         <div className='userMenu' ref={userMenuRef}>
                             <div>내 디벨로그</div>
-                            <div onClick={() => { setUser(false); setUserMenu(false); localStorage.removeItem("user"); }}>로그아웃</div>
+                            <div onClick={handleLogout}>로그아웃</div>
                         </div>
                     </div>
                 }
