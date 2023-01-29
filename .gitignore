@@ -1,6 +1,9 @@
 backend/node_modules
 backend/config/dev.js
+backend/.env
+backend/public
 frontend/node_modules
 frontend/build
+frontend/.env
 node_modules
 test

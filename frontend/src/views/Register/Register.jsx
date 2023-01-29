@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form";
 import axios from 'axios'
 import "./Register.scss"
 import { useContext, useState } from "react";
-import { baseURI, userContext } from "../../App";
+import { userContext } from "../../App";
+import { useEffect } from "react";
 
 const Register = () => {
     const { register, handleSubmit, formState: { isSubmitting }, } = useForm({ mode: "onChange" })
@@ -11,32 +12,37 @@ const Register = () => {
     const [errorPw, setErrorPw] = useState("")
     const [errorPwConfirm, setErrorPwConfirm] = useState("")
     const navigate = useNavigate()
-    const {user, setUser} = useContext(userContext)
+    const { user, setUser } = useContext(userContext)
+
+    useEffect(()=>{
+        document.getElementsByTagName('title')[0].innerText = '회원가입'
+    })
 
     const onSubmit = async (data) => {
         const { id, pw, pw_confirm } = data;
         setErrorID("")
         setErrorPw("")
         setErrorPwConfirm("")
-        if(id==""){
+        if (id == "") {
             setErrorID("아이디를 입력해주세요")
         }
-        if(pw==""){
+        if (pw == "") {
             setErrorPw("비밀번호를 입력해주세요")
         }
-        if(pw_confirm==""){
+        if (pw_confirm == "") {
             setErrorPwConfirm("비밀번호를 입력해주세요")
         }
-        if(pw&&pw!=pw_confirm){
+        if (pw && pw != pw_confirm) {
             setErrorPwConfirm("비밀번호가 일치하지 않습니다")
         }
-        if(id&&pw&&pw==pw_confirm){
-            const res = await axios.post(`${baseURI}/api/users/register`, {id:id, pw:pw})
-            if(res.data.success){
+        if (id && pw && pw == pw_confirm) {
+            const res = await axios.post(`${process.env.REACT_APP_SERVER_URI}/api/users/register`, { id: id, pw: pw })
+            if (res.data.success) {
                 setUser(id)
+                axios.defaults.headers.common['Authorization'] = res.data.token;
                 navigate("/")
             }
-            else{
+            else {
                 setErrorID("이미 존재하는 아이디입니다")
             }
         }
@@ -57,7 +63,7 @@ const Register = () => {
                 <input type="password" placeholder="비밀번호를 한번 더 입력하세요" {...register("pw_confirm")}></input>
                 <h5>{errorPwConfirm}</h5>
                 <div claasName="btn_group">
-                    <button className="cancle" onClick={()=>navigate("/")}>취소</button>
+                    <button className="cancle" onClick={() => navigate("/")}>취소</button>
                     <button className="ensure" input type="submit" disabled={isSubmitting}>확인</button>
                 </div>
             </form>

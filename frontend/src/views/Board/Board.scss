@@ -1,0 +1,96 @@
+.board {
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    width: 50rem;
+    margin: 0 auto;
+
+    h5 {
+        font-weight: 400;
+        font-size: 1rem
+    }
+
+    .title {
+        font-size: 3rem;
+        font-weight: bold;
+        color: rgb(29, 29, 29);
+    }
+
+    .title_below {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        word-spacing: 2px;
+
+        h5 {
+            color: rgb(61, 61, 61);
+        }
+
+        >div {
+            display: flex;
+            align-items: center;
+        }
+
+        .ctrl_btns {
+            h5 {
+                margin: 0 0.3rem;
+                color: rgb(123, 125, 136);
+
+                &:hover {
+                    color: rgb(75, 75, 75);
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .tag_wrapper {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+
+        .tag {
+            box-sizing: border-box;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            padding: 0.4rem 0.8rem;
+            margin: 0.2rem;
+            color: rgb(68, 196, 153);
+            background-color: #f3f3f3;
+            border-radius: 1.6rem;
+
+            &:hover {
+                cursor: pointer;
+                opacity: 0.7;
+            }
+        }
+    }
+
+    .profile{
+        margin-top: 16rem;
+        padding-bottom: 1rem;
+        display: flex;
+        border-bottom: 1px solid rgb(194, 194, 194);
+        img{
+            width: 8rem;
+            height: 8rem;
+            border-radius: 100%;
+            margin-right: 1rem
+        }
+        .profile_text{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        h2{
+            margin: 0.3rem 0;
+            color: #303030;
+        }
+        h3{
+            margin: 0.3rem 0;
+            color: #5c5c5c;
+            font-weight: 400;
+        }
+    }
+}

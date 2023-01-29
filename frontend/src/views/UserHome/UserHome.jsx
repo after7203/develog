@@ -2,20 +2,23 @@ import { useEffect } from "react"
 import { useRef } from "react"
 import { useState } from "react"
 import "./UserHome.scss"
-import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
+import { useParams } from "react-router-dom";
+import UserHomePreview from "../../components/UserHomePreview/UserHomePreview";
 
 const UserHome = () => {
-    const [ menu, setMenu ] = useState("article")
+    const [menu, setMenu] = useState("article")
     const menuRef = useRef()
-    useEffect(()=>{
-        if(menu == "article"){
+    const params = useParams();
+    useEffect(() => {
+        document.getElementsByTagName('title')[0].innerText = params.user.substring(1)
+        if (menu == "article") {
             menuRef.current.className = "menu article"
         }
-        else if(menu == "series"){
+        else if (menu == "series") {
             menuRef.current.className = "menu series"
         }
-        else if(menu == "introduce_tap"){
+        else if (menu == "introduce_tap") {
             menuRef.current.className = "menu introduce_tap"
         }
     }, [menu])
@@ -31,18 +34,19 @@ const UserHome = () => {
                     </div>
                 </div>
                 <div className="menu" ref={menuRef}>
-                    <div className="article" onClick={()=>setMenu("article")}>
+                    <div className="article" onClick={() => setMenu("article")}>
                         글
                     </div>
-                    <div className="series" onClick={()=>setMenu("series")}>
+                    <div className="series" onClick={() => setMenu("series")}>
                         시리즈
                     </div>
-                    <div className="introduce_tap" onClick={()=>setMenu("introduce_tap")}>
+                    <div className="introduce_tap" onClick={() => setMenu("introduce_tap")}>
                         소개
                     </div>
                     <sapn className="below_line"></sapn>
                 </div>
                 <div className="search"></div>
+                <UserHomePreview/>
             </div>
             <div className="right"></div>
         </div>

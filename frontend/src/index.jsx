@@ -13,6 +13,7 @@ import App from './App';
 import Header from './views/Header/Header';
 import UserHome from './views/UserHome/UserHome';
 import Write from './views/Write/Write';
+import Board from './views/Board/Board';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
         <Route element={<Header />}>
           <Route index element={<Home />} />
           <Route path="/:user" element={<UserHome />} />
+          <Route path="/:user/:boardURL" element={<Board />} />
         </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/write" element={<Write />} />
