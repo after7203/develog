@@ -42,7 +42,7 @@ function Header() {
         setUser(false)
         setUserMenu(false)
         localStorage.removeItem("user"); localStorage.removeItem("token")
-        //Storage.removeItem("user"); sessionStorage.removeItem("token")
+        // Storage.removeItem("user"); sessionStorage.removeItem("token")
     }
 
     useEffect(() => {

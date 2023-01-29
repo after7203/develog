@@ -32,11 +32,11 @@ function LoginModal({ loginToggle, toggleLoginModal, loginRef }) {
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("mongoose_id", res.data.mongoose_id);
             }
-            else{
-                sessionStorage.setItem("user", data.id);
-                sessionStorage.setItem("token", res.data.token);
-                sessionStorage.setItem("mongoose_id", res.data.mongoose_id);
-            }
+            // else{
+            //     sessionStorage.setItem("user", data.id);
+            //     sessionStorage.setItem("token", res.data.token);
+            //     sessionStorage.setItem("mongoose_id", res.data.mongoose_id);
+            // }
             toggleLoginModal()
         }
         else {
