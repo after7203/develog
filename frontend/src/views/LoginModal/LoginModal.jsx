@@ -27,11 +27,11 @@ function LoginModal({ loginToggle, toggleLoginModal, loginRef }) {
         if (res.data.success) {
             setUser(id)
             axios.defaults.headers.common['Authorization'] = res.data.token;
-            if(document.getElementsByClassName('autologin')[0].checked){
-                localStorage.setItem("user", data.id);
-                localStorage.setItem("token", res.data.token);
-                localStorage.setItem("mongoose_id", res.data.mongoose_id);
-            }
+            // if(document.getElementsByClassName('autologin')[0].checked){
+            //     localStorage.setItem("user", data.id);
+            //     localStorage.setItem("token", res.data.token);
+            //     localStorage.setItem("mongoose_id", res.data.mongoose_id);
+            // }
             // else{
             //     sessionStorage.setItem("user", data.id);
             //     sessionStorage.setItem("token", res.data.token);

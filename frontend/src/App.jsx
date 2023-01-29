@@ -9,7 +9,7 @@ export const userContext = createContext()
 const App = () => {
     const [user, setUser] = useState(false)
     useEffect(() => {
-        setUser(localStorage.getItem("user"))
+        // setUser(localStorage.getItem("user"))
     }, [])
     return (
         <userContext.Provider value={{ user, setUser }}>
