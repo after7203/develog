@@ -55,9 +55,9 @@ const Write = () => {
         document.getElementsByClassName("tag_form")[0].addEventListener("blur", () => setIsFocus(false))
         document.getElementsByTagName("body")[0].classList.add("scroll_off")
         window.addEventListener("mousedown", handleClickOutside);
-        const user_id = (localStorage.getItem("user") ? localStorage.getItem("user") : SessionStorage.getItem("user"))
-        axios.defaults.headers.common['Authorization'] = localStorage.getItem("token") ? localStorage.getItem("token") : SessionStorage.getItem("token");
-        //axios.defaults.headers.common['mongoose_id'] = localStorage.getItem("mongoose_id") ? localStorage.getItem("mongoose_id") : SessionStorage.getItem("mongoose_id");
+        const user_id = (localStorage.getItem("user") ? localStorage.getItem("user") : sessionStorage.getItem("user"))
+        axios.defaults.headers.common['Authorization'] = localStorage.getItem("token") ? localStorage.getItem("token") : sessionStorage.getItem("token");
+        //axios.defaults.headers.common['mongoose_id'] = localStorage.getItem("mongoose_id") ? localStorage.getItem("mongoose_id") : sessionStorage.getItem("mongoose_id");
         (async () => {
             const res = await axios.get(`${process.env.REACT_APP_SERVER_URI}/api/users/series`, { params: { id: user_id } })
             setUserSeries(res.data.userSeries)

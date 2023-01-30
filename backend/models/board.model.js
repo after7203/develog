@@ -12,7 +12,7 @@ const boardSchema = new mongoose.Schema({
     thumbnail: { type: String },
     tags: [{ type: String }],
     series: [{ type: String }],
-    //reply: [{ type: Schema.Types.ObjectId, ref: 'Reply'}]
+    reply: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Reply'}]
 }, { timestamps: true }
 );
 

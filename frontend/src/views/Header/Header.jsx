@@ -41,8 +41,8 @@ function Header() {
     const handleLogout = () => {
         setUser(false)
         setUserMenu(false)
-        //localStorage.removeItem("user"); localStorage.removeItem("token")
-        // Storage.removeItem("user"); sessionStorage.removeItem("token")
+        localStorage.removeItem("user"); localStorage.removeItem("token")
+        Storage.removeItem("user"); sessionStorage.removeItem("token")
     }
 
     useEffect(() => {

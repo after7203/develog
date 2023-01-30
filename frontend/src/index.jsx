@@ -22,7 +22,7 @@ const router = createBrowserRouter(
         <Route element={<Header />}>
           <Route index element={<Home />} />
           <Route path="/:user" element={<UserHome />} />
-          <Route path="/:user/:boardURL" element={<Board />} />
+          <Route path="/:writer/:boardURL" element={<Board />} />
         </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/write" element={<Write />} />

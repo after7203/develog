@@ -14,6 +14,7 @@
         font-size: 3rem;
         font-weight: bold;
         color: rgb(29, 29, 29);
+        margin-bottom: 2rem;
     }
 
     .title_below {
@@ -21,6 +22,7 @@
         justify-content: space-between;
         align-items: center;
         word-spacing: 2px;
+        margin-bottom: 1rem;
 
         h5 {
             color: rgb(61, 61, 61);
@@ -56,6 +58,7 @@
             align-items: center;
             padding: 0.4rem 0.8rem;
             margin: 0.2rem;
+            margin-bottom: 4rem;
             color: rgb(68, 196, 153);
             background-color: #f3f3f3;
             border-radius: 1.6rem;
@@ -67,30 +70,110 @@
         }
     }
 
-    .profile{
+    .profile {
         margin-top: 16rem;
-        padding-bottom: 1rem;
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
         display: flex;
-        border-bottom: 1px solid rgb(194, 194, 194);
-        img{
+        border-bottom: 1px solid rgb(238, 238, 238);
+
+        img {
             width: 8rem;
             height: 8rem;
             border-radius: 100%;
             margin-right: 1rem
         }
-        .profile_text{
+
+        .profile_text {
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
-        h2{
+
+        h2 {
             margin: 0.3rem 0;
             color: #303030;
         }
-        h3{
+
+        h3 {
             margin: 0.3rem 0;
             color: #5c5c5c;
             font-weight: 400;
+        }
+    }
+
+    .ref {
+        display: flex;
+        margin-bottom: 3rem;
+        a {
+            margin: 0 0.5rem;
+            svg {
+                color: rgb(124, 124, 124);
+                width: 2rem;
+                height: 2rem;
+                &:hover{
+                    opacity: 0.7;
+                }
+            }
+        }
+    }
+
+    .reply_count{
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #303133;
+        margin-bottom: 1.5rem;
+    }
+
+    textarea{
+        min-height: 5rem;
+        border: solid 1px rgb(236, 236, 236);
+        padding: 10px;
+        resize: none;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 2rem;
+
+        &:focus-visible {
+            outline: none;
+        }
+
+        &::placeholder {
+            color: rgb(125, 133, 141);
+        }
+    }
+
+    .rpbtn_wrapper{
+        height: 2.3rem;
+        display: flex;
+        justify-content: end;
+        margin-bottom: 3rem;
+        .cancelbtn{
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            margin-right: 1rem;
+            color: rgb(85, 218, 174);
+            border-radius: 0.3rem;
+            font-weight: 700;
+            &:hover{
+                cursor: pointer;
+                opacity: 0.7;
+                background-color: #ebebeb;
+            }
+        }
+        .rpbtn{
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            color: white;
+            background-color: rgb(85, 218, 174);
+            border-radius: 0.3rem;
+            font-weight: 700;
+            &:hover{
+                cursor: pointer;
+                opacity: 0.7;
+            }
         }
     }
 }

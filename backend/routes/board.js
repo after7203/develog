@@ -35,11 +35,12 @@ router.get("/", async (req, res) => {
 
 router.get("/:writer/:boardURL", async (req, res) => {
     try {
-        const board = await Board.findOne({ writer: req.params.writer, url: req.params.boardURL })
+        const board = await Board.findOne({ writer: req.params.writer, url: req.params.boardURL }).populate({ path: 'reply', populate: [{ path: 'writer', select: 'id' }, { path: 'reply', populate: { path: 'writer', select: 'id' } }] })
         return res.status(200).json({
             board: board
         });
-    } catch {
+    } catch (e) {
+        console.log(e)
         return res.status(200).json({
             success: false
         });
@@ -48,7 +49,7 @@ router.get("/:writer/:boardURL", async (req, res) => {
 
 router.post("/:writer/:boardURL", auth, upload.array('files'), async (req, res) => {
     const { writer, title, tags, brief, scope, url, series, contents, thumbnail } = JSON.parse(decodeURIComponent(req.headers.data))
-    console.log(JSON.parse(decodeURIComponent(req.headers.data)))
+    if (req.decoded.id !== writer) return
     try {
         await Board.create({
             writer: writer,
@@ -72,12 +73,13 @@ router.post("/:writer/:boardURL", auth, upload.array('files'), async (req, res) 
 });
 
 router.delete("/:writer/:boardURL", auth, async (req, res) => {
+    if (req.decoded.id !== req.params.write) return
     try {
         await Board.deleteOne({ writer: req.params.writer, url: req.params.boardURL })
-        fs.rm(`./public/users/${req.params.writer}/board/${req.params.boardURL}`,{ recursive: true }, err => {
+        fs.rm(`./public/users/${req.params.writer}/board/${req.params.boardURL}`, { recursive: true }, err => {
             console.log("err : ", err);
         })
-        
+
         return res.status(200).json({
             success: true
         });

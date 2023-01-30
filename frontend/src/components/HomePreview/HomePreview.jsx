@@ -6,11 +6,13 @@ function HomePreview({ board }) {
     const navigate = useNavigate()
     const { writer, title, url, brief, like, thumbnail, createdAt } = board
     return (
-        < div className='home-preview' onClick={() => navigate(`/@${writer}/${url}`)}>
-            {thumbnail && <img className='thumbnail' src={`${process.env.REACT_APP_SERVER_URI}/public/users/${writer}/board/${url}/contents/${thumbnail}`} />}
+        <div className='home-preview' onClick={() => navigate(`/@${writer}/${url}`)}>
+            <div className='thumb_wrapper'>
+                {thumbnail && <img className='thumbnail' src={`${process.env.REACT_APP_SERVER_URI}/public/users/${writer}/board/${url}/contents/${thumbnail}`} />}
+            </div>
             <div className='title'>{title}</div>
             <div className='brief'>{brief}</div>
-            <div className='day-reply'>{calTimeDiff(createdAt)} · 0개의 댓글</div>
+            <div className='day-reply'>{calTimeDiff(createdAt)} · {board.reply.length}개의 댓글</div>
             <div className='below-info'>
                 <div className='bi-left'>
                     <img className="bi-thumb" src='https://velog.velcdn.com/images/tosspayments/profile/b8fbda89-6591-41ea-b280-582674fcff7a/image.jpg' />
@@ -22,7 +24,7 @@ function HomePreview({ board }) {
                     <div>{like}</div>
                 </div>
             </div>
-        </div >
+        </div>
     )
 }
 

@@ -43,7 +43,7 @@ const UserHome = () => {
                     <div className="introduce_tap" onClick={() => setMenu("introduce_tap")}>
                         소개
                     </div>
-                    <sapn className="below_line"></sapn>
+                    <span className="below_line"></span>
                 </div>
                 <div className="search"></div>
                 <UserHomePreview/>

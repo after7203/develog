@@ -27,16 +27,16 @@ function LoginModal({ loginToggle, toggleLoginModal, loginRef }) {
         if (res.data.success) {
             setUser(id)
             axios.defaults.headers.common['Authorization'] = res.data.token;
-            // if(document.getElementsByClassName('autologin')[0].checked){
-            //     localStorage.setItem("user", data.id);
-            //     localStorage.setItem("token", res.data.token);
-            //     localStorage.setItem("mongoose_id", res.data.mongoose_id);
-            // }
-            // else{
-            //     sessionStorage.setItem("user", data.id);
-            //     sessionStorage.setItem("token", res.data.token);
-            //     sessionStorage.setItem("mongoose_id", res.data.mongoose_id);
-            // }
+            if(document.getElementsByClassName('autologin')[0].checked){
+                localStorage.setItem("user", data.id);
+                localStorage.setItem("token", res.data.token);
+                localStorage.setItem("mongoose_id", res.data.mongoose_id);
+            }
+            else{
+                sessionStorage.setItem("user", data.id);
+                sessionStorage.setItem("token", res.data.token);
+                sessionStorage.setItem("mongoose_id", res.data.mongoose_id);
+            }
             toggleLoginModal()
         }
         else {
@@ -61,7 +61,7 @@ function LoginModal({ loginToggle, toggleLoginModal, loginRef }) {
                         <input className="id" type="text" placeholder="아이디를 입력하세요." {...register("id")} />
                         {id == "" && <h5>아이디를 입력해주세요</h5>}
                         <h4>비밀번호</h4>
-                        <input className="pw" type="password" placeholder="비밀번호를 입력하세요." {...register("pw")} />
+                        <input className="pw" type="password" placeholder="비밀번호를 입력하세요." autoComplete="on" {...register("pw")} />
                         {pw == "" ? <h5>비밀번호를 입력해주세요</h5> : error && <h5>아이디 또는 비밀번호를 확인해주세요</h5>}
                         <div className="wrapper_autologin">
                             <input className="autologin " type="checkbox" id="autologin" />
