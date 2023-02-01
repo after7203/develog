@@ -10,13 +10,14 @@ import axios from 'axios';
 
 function Home() {
   const [boards, setBoards] = useState(null)
-  axios.get(`${process.env.REACT_APP_SERVER_URI}/api/board/`).then((res)=>{
-    setBoards(res.data.boards)
-  })
-  useEffect(()=>{
+
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_SERVER_URI}/api/board/`).then((res) => {
+      setBoards(res.data.boards)
+    })
     document.getElementsByTagName('title')[0].innerText = 'develog'
-  })
-  
+  }, [])
+
   return (
     <>
       <div className='home'>
@@ -41,7 +42,7 @@ function Home() {
           <div className='more'><svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" className="more" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg></div>
         </div>
         <div className='home-previews'>
-          {boards && boards.map(board=>(<HomePreview key={JSON.stringify(board)} board={board}/>))}
+          {boards && boards.map(board => (<HomePreview key={JSON.stringify(board)} board={board} />))}
         </div>
       </div>
     </>

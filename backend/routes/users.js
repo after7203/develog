@@ -12,7 +12,8 @@ router.post("/register", async (req, res) => {
     const bpw = await bcrypt.hashSync(pw, salt)
     try {
         await User.create({ id: id, pw: bpw })
-    } catch {
+    } catch(e) {
+        console.log(e)
         return res.status(200).json({
             success: false
         });

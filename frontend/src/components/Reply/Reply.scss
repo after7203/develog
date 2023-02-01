@@ -57,6 +57,16 @@
     }
 
     .expand_reply {
+        >div {
+            display: flex;
+            align-items: center;
+
+            &:hover {
+                cursor: pointer;
+                opacity: 0.7;
+            }
+        }
+
         svg {
             margin-top: 0.2rem;
             margin-right: 0.5rem;
@@ -66,10 +76,57 @@
         align-items: center;
         margin: 1rem 0;
         color: rgb(14, 197, 151);
+    }
+}
 
-        &:hover {
-            cursor: pointer;
-            opacity: 0.7;
+.contents {
+    textarea {
+        width: calc(100% - 20px);
+        box-sizing: content-box;
+        min-height: calc(5rem + 22px);
+        padding: 10px;
+        border: solid 1px rgb(236, 236, 236);
+        resize: none;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 2rem;
+    }
+
+    .revise_wrapper {
+        height: 2.3rem;
+        display: flex;
+        justify-content: end;
+        margin-bottom: 0rem;
+
+        .cancelbtn {
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            margin-right: 1rem;
+            color: rgb(85, 218, 174);
+            border-radius: 0.3rem;
+            font-weight: 700;
+
+            &:hover {
+                cursor: pointer;
+                opacity: 0.7;
+                background-color: #ebebeb;
+            }
+        }
+
+        .rpbtn {
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            color: white;
+            background-color: rgb(85, 218, 174);
+            border-radius: 0.3rem;
+            font-weight: 700;
+
+            &:hover {
+                cursor: pointer;
+                opacity: 0.7;
+            }
         }
     }
 }
@@ -134,6 +191,23 @@
                 cursor: pointer;
                 opacity: 0.7;
             }
+        }
+    }
+    .expandform_btn{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: rgb(13, 197, 136);
+        font-weight: 700;
+        border: 1.9px solid rgb(13, 197, 136);
+        background-color: white;
+        height: 2.3rem;
+        border-radius: 5px;
+        &:hover{
+            cursor: pointer;
+            background-color: rgb(13, 197, 136);
+            color: white;
+            opacity: 0.7;
         }
     }
 }

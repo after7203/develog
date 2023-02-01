@@ -22,7 +22,21 @@ const upload = multer({
 
 router.get("/", async (req, res) => {
     try {
-        const boards = await Board.find({})
+        const boards = await Board.find().populate('reply', 'reply')
+        return res.status(200).json({
+            boards: boards
+        });
+    } catch {
+        return res.status(200).json({
+            success: false
+        });
+    }
+});
+
+router.get("/:writer", async (req, res) => {
+    try {
+        //onsole.log(req.params.writer)
+        const boards = await Board.find({ writer: req.params.writer }).populate('reply', 'reply')
         return res.status(200).json({
             boards: boards
         });
@@ -49,6 +63,7 @@ router.get("/:writer/:boardURL", async (req, res) => {
 
 router.post("/:writer/:boardURL", auth, upload.array('files'), async (req, res) => {
     const { writer, title, tags, brief, scope, url, series, contents, thumbnail } = JSON.parse(decodeURIComponent(req.headers.data))
+    // console.log(req.decoded.id, writer)
     if (req.decoded.id !== writer) return
     try {
         await Board.create({
@@ -62,7 +77,8 @@ router.post("/:writer/:boardURL", auth, upload.array('files'), async (req, res) 
             series: series,
             thumbnail: thumbnail
         })
-    } catch {
+    } catch (e){
+        console.log(e)
         return res.status(200).json({
             success: false
         });

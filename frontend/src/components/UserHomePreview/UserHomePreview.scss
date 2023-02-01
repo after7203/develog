@@ -3,19 +3,29 @@
     flex-direction: column;
     padding: 2rem 0;
     overflow: hidden;
-
+    padding-top: 6rem;
+    border-top: 1px solid rgb(238, 238, 238);
     img {
         min-width: 100%;
         min-height: 25rem;
         object-fit: cover;
         margin-bottom: 1rem;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 
-    h2{
+    h2 {
         font-weight: 600;
         color: rgb(10, 10, 10);
         margin: 0;
         margin-bottom: 1rem;
+
+        &:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
     }
 
     h4 {
@@ -25,7 +35,7 @@
         margin-bottom: 2rem;
     }
 
-    h5{
+    h5 {
         font-weight: 400;
         color: rgb(151, 151, 151);
     }
@@ -58,8 +68,10 @@
         align-items: center;
         height: 1rem;
         line-height: 1rem;
+        margin-bottom: 2rem;
         color: rgb(145, 151, 161);
-        svg{
+
+        svg {
             margin-left: 0.4rem;
             margin-right: 0.2rem;
         }

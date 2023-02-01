@@ -248,13 +248,13 @@ const Write = () => {
             return { contents: replaced, files }
         })()
         const formdata = new FormData()
-        let thumbnailName = null
+        let data = { ...input, contents: contents, writer: user }
         if (thumbPreview) {
             const thumbnail = base64toFile(thumbPreview, "thumbnail")
-            thumbnailName = thumbnail.name
             formdata.append('files', thumbnail)
+            data = { ...data, thumbnail: `public/users/${user}/board/${input.url}/contents/${thumbnail.name}` }
         }
-        const headers = { headers: { data: encodeURIComponent(JSON.stringify({ ...input, contents: contents, writer: user, thumbnail: thumbnailName})) } }
+        const headers = { headers: { data: encodeURIComponent(JSON.stringify(data)) } }
         files.forEach(file => formdata.append('files', file))
         axios.post(`${process.env.REACT_APP_SERVER_URI}/api/board/${user}/${input.url}`, formdata, headers)
             .then(() => navigate('/'))
@@ -277,7 +277,7 @@ const Write = () => {
                     <div className="editor_wrapper">
                         <Editor
                             ref={ref_editor}
-                            initialValue=""//console.log(a); let a = 4 + 3;"
+                            initialValue=""//onsole.log(a); let a = 4 + 3;"
                             height="100%"
                             previewStyle="vertical"
                             //initialEditType='markdown'//'wysiwyg'//'markdown'

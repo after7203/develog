@@ -9,24 +9,23 @@ import { useContext } from "react";
 
 function LoginModal({ loginToggle, toggleLoginModal, loginRef }) {
     const { register, handleSubmit, formState: { isSubmitting }, } = useForm()
-    const [id, setId] = useState("default")
-    const [pw, setPw] = useState("default")
+    const [id, setId] = useState(null)
+    const [pw, setPw] = useState(null)
     const [error, setError] = useState(false)
     const { user, setUser } = useContext(userContext)
 
     const onSubmit = async (data) => {
-        setError(false)
         setId(data.id)
         setPw(data.pw)
-        if (id && pw) {
+        setError(false)
+        if (data.id && data.pw) {
             var res = await axios.post(`${process.env.REACT_APP_SERVER_URI}/api/users/login`, data)
         }
         else {
             return;
         }
         if (res.data.success) {
-            setUser(id)
-            axios.defaults.headers.common['Authorization'] = res.data.token;
+            setUser(data.id)
             if(document.getElementsByClassName('autologin')[0].checked){
                 localStorage.setItem("user", data.id);
                 localStorage.setItem("token", res.data.token);

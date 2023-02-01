@@ -6,13 +6,13 @@ const boardSchema = new mongoose.Schema({
     title: { type: String, required: true },
     url: { type: String, required: true, },
     scope: { type: String, enum: ['public', 'private'], required: true },
-    brief: { type: String, required: true },
+    brief: { type: String},
     contents: { type: String, required: true },
     like: { type: Number, required: true, default: 0 },
-    thumbnail: { type: String },
+    thumbnail: { type: String, required: true, default: 'public/default/thumbnail.png' },
     tags: [{ type: String }],
     series: [{ type: String }],
-    reply: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Reply'}]
+    reply: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Reply' }]
 }, { timestamps: true }
 );
 

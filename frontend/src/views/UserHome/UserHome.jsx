@@ -5,12 +5,19 @@ import "./UserHome.scss"
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { useParams } from "react-router-dom";
 import UserHomePreview from "../../components/UserHomePreview/UserHomePreview";
+import axios from "axios";
 
 const UserHome = () => {
+    let { user } = useParams()
+    user = user.substring(1)
+    const [boards, setBoards] = useState([])
     const [menu, setMenu] = useState("article")
     const menuRef = useRef()
     const params = useParams();
     useEffect(() => {
+        axios.get(`${process.env.REACT_APP_SERVER_URI}/api/board/${user}`).then((res) => {
+            setBoards(res.data.boards)
+        })
         document.getElementsByTagName('title')[0].innerText = params.user.substring(1)
         if (menu == "article") {
             menuRef.current.className = "menu article"
@@ -29,7 +36,7 @@ const UserHome = () => {
                 <div className="introduce">
                     <img className="profile-img" src={require("../../asset/profile_1.png")} />
                     <div>
-                        <h2>after7203</h2>
+                        <h2>{user}</h2>
                         <h3>안녕하시어요</h3>
                     </div>
                 </div>
@@ -46,7 +53,9 @@ const UserHome = () => {
                     <span className="below_line"></span>
                 </div>
                 <div className="search"></div>
-                <UserHomePreview/>
+                {boards.map(board => (
+                    <UserHomePreview key={JSON.stringify(board)} board={board} />
+                ))}
             </div>
             <div className="right"></div>
         </div>

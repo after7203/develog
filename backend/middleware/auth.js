@@ -9,6 +9,7 @@ const auth = (req, res, next) => {
     return next();
   } catch (error) {
     // 토큰의 비밀키가 일치하지 않는 경우
+    console.log(error)
     if (error.name === "JsonWebTokenError") {
       return res.status(401).json({
         code: 401,

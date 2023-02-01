@@ -39,7 +39,9 @@ const Register = () => {
             const res = await axios.post(`${process.env.REACT_APP_SERVER_URI}/api/users/register`, { id: id, pw: pw })
             if (res.data.success) {
                 setUser(id)
-                axios.defaults.headers.common['Authorization'] = res.data.token;
+                sessionStorage.setItem("user", id);
+                sessionStorage.setItem("token", res.data.token);
+                sessionStorage.setItem("mongoose_id", res.data.mongoose_id);
                 navigate("/")
             }
             else {
@@ -62,7 +64,7 @@ const Register = () => {
                 <h4>비밀번호 확인</h4>
                 <input type="password" placeholder="비밀번호를 한번 더 입력하세요" {...register("pw_confirm")}></input>
                 <h5>{errorPwConfirm}</h5>
-                <div claasName="btn_group">
+                <div className="btn_group">
                     <button className="cancle" onClick={() => navigate("/")}>취소</button>
                     <button className="ensure" input type="submit" disabled={isSubmitting}>확인</button>
                 </div>

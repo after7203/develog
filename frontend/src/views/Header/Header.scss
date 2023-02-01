@@ -92,6 +92,11 @@ header {
         width: 40px;
         height: 40px;
         border-radius: 2rem;
+
+        &:hover {
+            color: #333;
+            cursor: pointer;
+        }
     }
 
     .bi.bi-caret-down-fill {
