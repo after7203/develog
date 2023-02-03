@@ -11,8 +11,7 @@ const Reply = ({ _isExpand, reply, expandList, setExpandList, board, getBoard })
     const[isExpandForm, setIsExpandForm] = useState(false)
     const add_textarea = useRef()
     const revise_textarea = useRef()
-    const userId = localStorage.getItem("user") ? localStorage.getItem("user") : sessionStorage.getItem("user")
-    const mongoose_id = localStorage.getItem("mongoose_id") ? localStorage.getItem("mongoose_id") : sessionStorage.getItem("mongoose_id")
+    const user = localStorage.getItem("user") || sessionStorage.getItem("user")
     useEffect(() => {
         // console.log(userId, reply.writer)
     })
@@ -25,13 +24,13 @@ const Reply = ({ _isExpand, reply, expandList, setExpandList, board, getBoard })
         add_textarea.current.style.height = add_textarea.current.scrollHeight - 20 + 'px';
     };
     const onDelete = () => {
-        axios.delete(`${process.env.REACT_APP_SERVER_URI}/api/reply`, { data: { _id: reply._id } }).then(() => {
+        axios.delete(`${process.env.REACT_APP_SERVER_URI}/api/reply/${reply._id}`).then(() => {
             getBoard()
         })
     }
 
     const onSubmitReply = () => {
-        axios.post(`${process.env.REACT_APP_SERVER_URI}/api/reply/${board.writer}/${board.url}/${reply._id}`, { parentReply: reply._id, userId: userId, mongooseId: mongoose_id, contents: add_textarea.current.value }).then(() => {
+        axios.post(`${process.env.REACT_APP_SERVER_URI}/api/reply/${board._id}/${reply._id}`, { parentReply: reply._id, userId: user.id, mongooseId: user._id, contents: add_textarea.current.value }).then(() => {
             add_textarea.current.value = ''
             getBoard()
         })
@@ -54,7 +53,7 @@ const Reply = ({ _isExpand, reply, expandList, setExpandList, board, getBoard })
                         <h5>{calTimeDiff(reply.createdAt)}</h5>
                     </div>
                 </div>
-                {reply.writer.id === userId &&
+                {reply.writer.id === user.id &&
                     <div className="right">
                         <h5 onClick={() => setIsRevise(true)}>수정</h5>
                         <h5 onClick={onDelete}>삭제</h5>

@@ -16,8 +16,8 @@ const UserHomePreview = ({ board }) => {
     }
     return (
         <div className="userHomePreview">
-            <img src={`${process.env.REACT_APP_SERVER_URI}/${board.thumbnail}`} onClick={() => navigate(`/@${board.writer}/${board.url}`)} />
-            <h2 onClick={() => navigate(`/@${board.writer}/${board.url}`)}>{board.title}</h2>
+            <img src={`${process.env.REACT_APP_SERVER_URI}/${board.thumbnail}`} onClick={() => navigate(`/@${board.writer.id}/${board.url}`)} />
+            <h2 onClick={() => navigate(`/@${board.writer.id}/${board.url}`)}>{board.title}</h2>
             <h4>{board.brief}</h4>
             <div className="tag_wrapper">
                 {board.tags.map(tag => (<div className="tag" key={tag}>{tag}</div>))}
@@ -25,9 +25,9 @@ const UserHomePreview = ({ board }) => {
             <div className="below">
                 <h5>{calTimeDiff(board.createdAt)} · {getReplyCount(board)}개의 댓글 · </h5>
                 <svg height="100%" viewBox="0 0 24 24"><path fill="currentColor" d="M18 1l-6 4-6-4-6 5v7l12 10 12-10v-7z"></path></svg>
-                <h5>0</h5>
+                <h5>{board.like.length}</h5>
             </div>
-        </div >
+        </div>
     )
 }
 

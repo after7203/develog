@@ -1,14 +1,12 @@
 const mongoose = require('mongoose');
 
 const boardSchema = new mongoose.Schema({
-    //writer_mid: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    writer: { type: String, required: true },
+    writer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     title: { type: String, required: true },
-    url: { type: String, required: true, },
+    url: { type: String, required: true },
     scope: { type: String, enum: ['public', 'private'], required: true },
-    brief: { type: String},
-    contents: { type: String, required: true },
-    like: { type: Number, required: true, default: 0 },
+    brief: { type: String },
+    like: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     thumbnail: { type: String, required: true, default: 'public/default/thumbnail.png' },
     tags: [{ type: String }],
     series: [{ type: String }],

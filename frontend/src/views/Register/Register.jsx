@@ -37,11 +37,9 @@ const Register = () => {
         }
         if (id && pw && pw == pw_confirm) {
             const res = await axios.post(`${process.env.REACT_APP_SERVER_URI}/api/users/register`, { id: id, pw: pw })
-            if (res.data.success) {
-                setUser(id)
-                sessionStorage.setItem("user", id);
-                sessionStorage.setItem("token", res.data.token);
-                sessionStorage.setItem("mongoose_id", res.data.mongoose_id);
+            if (res.data.user) {
+                setUser(res.data.user)
+                sessionStorage.setItem("user", JSON.stringify(res.data.user));
                 navigate("/")
             }
             else {

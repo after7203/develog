@@ -39,10 +39,10 @@ function Header() {
     };
 
     const handleLogout = () => {
+        localStorage.removeItem("user"); localStorage.removeItem("token"); localStorage.removeItem("mongoose_id")
+        sessionStorage.removeItem("user"); sessionStorage.removeItem("token"); sessionStorage.removeItem("mongoose_id")
         setUser(false)
         setUserMenu(false)
-        localStorage.removeItem("user"); localStorage.removeItem("token")
-        sessionStorage.removeItem("user"); sessionStorage.removeItem("token")
     }
 
     useEffect(() => {
@@ -72,25 +72,26 @@ function Header() {
                 </div>}
                 {user &&
                     <>
-                        <div className="write-btn" onClick={()=>navigate('/write')}> 
+                        <div className="write-btn" onClick={() => navigate('/write')}>
                             새 글 작성
                         </div>
-                        <img className="profile-img" onClick={()=>{navigate(`/@${user}`)}} src={require("../../asset/profile_1.png")} />
+                        <img className="profile-img" onClick={() => { navigate(`/@${user.id}`) }} src={user.profile} />
                         <svg ref={userMenuBtnRef} onClick={() => { setUserMenu((prev) => !prev) }} xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" className="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                            <path d ="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
                         </svg>
                     </>
                 }
                 {userMenu &&
                     <div className='userMenuParent'>
                         <div className='userMenu' ref={userMenuRef}>
-                            <div onClick={()=>{navigate(`/@${user}`); setUserMenu(false);}}>내 디벨로그</div>
+                            <div onClick={() => { navigate(`/@${user.id}`); setUserMenu(false); }}>내 디벨로그</div>
+                            <div onClick={() => { navigate(`/setting`); setUserMenu(false); }}>설정</div>
                             <div onClick={handleLogout}>로그아웃</div>
                         </div>
                     </div>
                 }
             </header>
-            <Outlet/>
+            <Outlet />
             <LoginModal loginToggle={loginToggle} toggleLoginModal={toggleLoginModal} loginRef={loginRef} />
         </>
     )

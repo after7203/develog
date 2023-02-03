@@ -11,6 +11,7 @@ import Home from './views/Home/Home.jsx'
 import Register from './views/Register/Register';
 import App from './App';
 import Header from './views/Header/Header';
+import Setting from './views/Setting/Setting';
 import UserHome from './views/UserHome/UserHome';
 import Write from './views/Write/Write';
 import Board from './views/Board/Board';
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
       <Route path="/" element={<App />}>
         <Route element={<Header />}>
           <Route index element={<Home />} />
+          <Route path="/setting" element={<Setting />} />
           <Route path="/:user" element={<UserHome />} />
           <Route path="/:writer/:boardURL" element={<Board />} />
         </Route>

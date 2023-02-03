@@ -97,6 +97,7 @@ $white-mint: rgb(50, 214, 179);
                 }
 
                 .tip {
+                    z-index: 10;
                     top: -0.5rem;
                     left: 0.5rem;
                     position: absolute;
@@ -145,6 +146,7 @@ $white-mint: rgb(50, 214, 179);
             }
 
             .editor_wrapper {
+                z-index: 0;
                 flex-grow: 1;
                 margin-bottom: 3.5rem
             }
@@ -278,6 +280,7 @@ $white-mint: rgb(50, 214, 179);
             font-size: 1.3rem;
             color: rgb(44, 44, 44);
             margin-bottom: 0.5rem;
+            margin-top: 0.5rem;
         }
 
         h3 {

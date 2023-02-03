@@ -24,17 +24,13 @@ function LoginModal({ loginToggle, toggleLoginModal, loginRef }) {
         else {
             return;
         }
-        if (res.data.success) {
-            setUser(data.id)
+        if (res.data.user) {
+            setUser(res.data.user)
             if(document.getElementsByClassName('autologin')[0].checked){
-                localStorage.setItem("user", data.id);
-                localStorage.setItem("token", res.data.token);
-                localStorage.setItem("mongoose_id", res.data.mongoose_id);
+                localStorage.setItem("user", JSON.stringify(res.data.user));
             }
             else{
-                sessionStorage.setItem("user", data.id);
-                sessionStorage.setItem("token", res.data.token);
-                sessionStorage.setItem("mongoose_id", res.data.mongoose_id);
+                sessionStorage.setItem("user", JSON.stringify(res.data.user));
             }
             toggleLoginModal()
         }

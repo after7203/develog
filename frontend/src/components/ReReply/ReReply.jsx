@@ -4,7 +4,7 @@ import calTimeDiff from '../../utils/calTimeDiff'
 import './ReReply.scss'
 
 const ReReply = ({ reply, getBoard }) => {
-    const userId = localStorage.getItem("user") ? localStorage.getItem("user") : sessionStorage.getItem("user")
+    const user = localStorage.getItem("user") || sessionStorage.getItem("user")
     const [isRevise, setIsRevise] = useState(false)
     const revise_textarea = useRef()
     const ResizeReviseform = () => {
@@ -12,7 +12,7 @@ const ReReply = ({ reply, getBoard }) => {
         revise_textarea.current.style.height = revise_textarea.current.scrollHeight - 20 + 'px';
     };
     const onDelete = () => {
-        axios.delete(`${process.env.REACT_APP_SERVER_URI}/api/reply`, { data: { _id: reply._id } }).then(() => {
+        axios.delete(`${process.env.REACT_APP_SERVER_URI}/api/reply/${reply._id}`).then(() => {
             getBoard()
         })
     }
@@ -32,7 +32,7 @@ const ReReply = ({ reply, getBoard }) => {
                         <h5>{calTimeDiff(reply.createdAt)}</h5>
                     </div>
                 </div>
-                {reply.writer.id === userId &&
+                {reply.writer.id === user.id &&
                     <div className="right">
                         <h5 onClick={() => { setIsRevise(true) }}>수정</h5>
                         <h5 onClick={onDelete}>삭제</h5>

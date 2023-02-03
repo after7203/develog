@@ -10,7 +10,7 @@ import colorSyntax from '@toast-ui/editor-plugin-color-syntax'
 import Prism from 'prismjs'
 import 'prismjs/themes/prism.css'
 import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { userContext } from "../../App";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify"
@@ -19,6 +19,7 @@ import 'react-toastify/dist/ReactToastify.min.css'
 const Write = () => {
     const { user, setUser } = useContext(userContext)
     const navigate = useNavigate()
+    const location = useLocation()
     const [input, setInput] = useState({
         title: '',
         tags: [],
@@ -34,6 +35,7 @@ const Write = () => {
     const [isCustomBrief, setIsCustomBrief] = useState(false)
     const [isCustomURL, setIsCustomURL] = useState(false)
     const [isCustomSeriesURL, setIsCustomSeriesURL] = useState(false)
+    const [isCustomThumb, setIsCustomThumb] = useState(false)
     const tagRef = useRef()
     const ref_editor = useRef()
     const series_url_preview = useRef()
@@ -51,22 +53,52 @@ const Write = () => {
         //             headers: config.headers,
         //         });
         //     });
+        if (location.state) {
+            (async () => {
+                const data = await fetch(`${process.env.REACT_APP_SERVER_URI}/${location.state.thumbnail}`)
+                const blob = await data.blob();
+                const reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onload = () => {
+                    setThumbPreview(reader.result)
+                }
+            })()
+            ref_editor.current.getInstance().setHTML(location.state.contents)
+            setInput({ ...location.state })
+            // let image = new Image();
+            // // let image = document.querySelector('img')[0]
+            // console.log(`${process.env.REACT_APP_SERVER_URI}/${location.state.thumbnail}`)
+            // image.src = `${process.env.REACT_APP_SERVER_URI}/${location.state.thumbnail}`;
+            // image.crossOrigin = 'Anonymous';
+            // let canvas = document.createElement('canvas');
+            // canvas.width = image.naturalWidth;
+            // canvas.height = image.naturalHeight;
+            // // canvas.width = image.width;
+            // // canvas.height = image.height;
+            // canvas.getContext('2d').drawImage(image, 0, 0);
+            // let uri = canvas.toDataURL(`image/${location.state.thumbnail.split('.').slice(-1)[0]}`, 1.0);
+            // setThumbPreview(uri)
+        }
         document.getElementsByTagName('title')[0].innerText = '새 글 작성'
         document.getElementsByClassName("tag_form")[0].addEventListener("blur", () => setIsFocus(false))
         document.getElementsByTagName("body")[0].classList.add("scroll_off")
         window.addEventListener("mousedown", handleClickOutside);
-        const user_id = (localStorage.getItem("user") ? localStorage.getItem("user") : sessionStorage.getItem("user"))
-        axios.defaults.headers.common['Authorization'] = localStorage.getItem("token") ? localStorage.getItem("token") : sessionStorage.getItem("token");
-        //axios.defaults.headers.common['mongoose_id'] = localStorage.getItem("mongoose_id") ? localStorage.getItem("mongoose_id") : sessionStorage.getItem("mongoose_id");
-        (async () => {
-            const res = await axios.get(`${process.env.REACT_APP_SERVER_URI}/api/users/series`, { params: { id: user_id } })
-            setUserSeries(res.data.userSeries)
-        })()
         return (() => {
             document.getElementsByTagName("body")[0].classList.remove("scroll_off")
             window.removeEventListener("mousedown", handleClickOutside);
         })
     }, []);
+
+    useEffect(() => {
+        if (user) {
+            axios.defaults.headers.common['Authorization'] = user.token;
+            axios.defaults.headers.common['mongoose_id'] = user._id;
+            (async () => {
+                const res = await axios.get(`${process.env.REACT_APP_SERVER_URI}/api/users/series`, { params: { id: user.id } })
+                setUserSeries(res.data.userSeries)
+            })()
+        }
+    }, [user])
 
     const base64toFile = (base_data, filename) => {
 
@@ -122,14 +154,14 @@ const Write = () => {
         if (input.title === '') {
             toast_null_title()
         }
-        else if (document.querySelector('div.toastui-editor-contents').children.length === 0) {
+        else if (ref_editor.current.getInstance().getMarkdown().length === 0) {
             toast_null_contents()
         }
         else {
             document.getElementsByClassName("detail_modal")[0].className = "detail_modal on"
-            const brief = isCustomBrief ? input.brief : document.querySelector('div.toastui-editor-contents').innerText.split('\n').filter(e => e !== "")[0] || ''
-            const url = isCustomURL ? input.url : input.title
-            if (thumbPreview === null) {
+            const brief = isCustomBrief || location.state ? input.brief : document.getElementsByClassName('ProseMirror toastui-editor-contents')[0].innerText.split('\n').filter(e => e !== "")[0] || ''
+            const url = isCustomURL || location.state ? input.url : input.title
+            if (!isCustomThumb && !location.state) {
                 const contents = ref_editor.current.getInstance().getHTML()
                 let result = null
                 const tagindex = contents.indexOf('<img')
@@ -153,8 +185,8 @@ const Write = () => {
         const reader = new FileReader();
         reader.readAsDataURL(e.target.files[0])
         reader.onload = function () {
-            setInput({ ...input })
             setThumbPreview(reader.result)
+            setIsCustomThumb(true)
         }
     }
 
@@ -204,7 +236,7 @@ const Write = () => {
         document.getElementsByClassName("user_url")[0].value = ''
         setUserSeries([...userSeries, { name: name, url: user_url }])
         shrinkSeriesAddForm()
-        await axios.post(`${process.env.REACT_APP_SERVER_URI}/api/users/series`, { user: user, name: name, url: user_url })
+        await axios.post(`${process.env.REACT_APP_SERVER_URI}/api/users/series`, { user: user.id, name: name, url: user_url })
     }
 
     const toggleSeriesSelect = (e) => {
@@ -227,37 +259,48 @@ const Write = () => {
     }
 
     const onSubmit = async () => {
-        const { contents, files } = (() => {
-            const contents = ref_editor.current.getInstance().getHTML()
-            let replaced = ""
-            const files = []
-            let curindex = 0
-            while (true) {
-                const imgindex = contents.indexOf('<img', curindex)
-                if (imgindex === -1) {
-                    replaced += contents.substring(curindex)
-                    break
-                }
-                const start = contents.indexOf('src="data:', imgindex) + 5
-                const end = contents.indexOf('"', start)
-                const file = base64toFile(contents.substring(start, end), curindex)
-                files.push(file)
-                replaced += contents.substring(curindex, start) + `${process.env.REACT_APP_SERVER_URI}/public/users/${user}/board/${input.url}/contents/${file.name}`
-                curindex = end
-            }
-            return { contents: replaced, files }
-        })()
+        // const { contents, files } = (() => {
+        //     const contents = ref_editor.current.getInstance().getHTML()
+        //     let replaced = ""
+        //     const files = []
+        //     let curindex = 0
+        //     while (true) {
+        //         const imgindex = contents.indexOf('<img', curindex)
+        //         if (imgindex === -1) {
+        //             replaced += contents.substring(curindex)
+        //             break
+        //         }
+        //         const start = contents.indexOf('src="data:', imgindex) + 5
+        //         const end = contents.indexOf('"', start)
+        //         const file = base64toFile(contents.substring(start, end), curindex)
+        //         files.push(file)
+        //         replaced += contents.substring(curindex, start) + `${process.env.REACT_APP_SERVER_URI}/public/users/${user}/board/${input.url}/contents/${file.name}`
+        //         curindex = end
+        //     }
+        //     return { contents: replaced, files }
+        // })()
+        let data = { ...input, writer: user.id, _id: location.state?._id }
+        delete data.contents
         const formdata = new FormData()
-        let data = { ...input, contents: contents, writer: user }
+        formdata.append('files', new File([ref_editor.current.getInstance().getHTML()], 'contents.txt', { type: "text/plain" }))
         if (thumbPreview) {
             const thumbnail = base64toFile(thumbPreview, "thumbnail")
             formdata.append('files', thumbnail)
-            data = { ...data, thumbnail: `public/users/${user}/board/${input.url}/contents/${thumbnail.name}` }
+            data = { ...data, thumbnail: `public/users/${user.id}/board/${input.url}/contents/${thumbnail.name}` }
         }
         const headers = { headers: { data: encodeURIComponent(JSON.stringify(data)) } }
-        files.forEach(file => formdata.append('files', file))
-        axios.post(`${process.env.REACT_APP_SERVER_URI}/api/board/${user}/${input.url}`, formdata, headers)
-            .then(() => navigate('/'))
+        console.log(1)
+        if (!location.state) {
+            axios.post(`${process.env.REACT_APP_SERVER_URI}/api/board/${user.id}/${input.url}`, formdata, headers)
+                .catch(e => console.log(e))
+                .then(() => navigate('/'))
+        }
+        else {
+            axios.put(`${process.env.REACT_APP_SERVER_URI}/api/board/${location.state._id}`, formdata, headers)
+                .catch(e => console.log(e))
+                .then(() => navigate('/'))
+        }
+
     }
 
     return (
@@ -265,7 +308,7 @@ const Write = () => {
             <ToastContainer />
             <div className="form_wrap">
                 <form className="write_form">
-                    <input className="title" type="text" placeholder="제목을 입력하세요" onChange={(e) => { setInput({ ...input, title: e.target.value }) }} />
+                    <input className="title" type="text" placeholder="제목을 입력하세요" defaultValue={input.title} onChange={(e) => { setInput({ ...input, title: e.target.value }) }} />
                     <div className="division" />
                     <div className="tag_wrapper">
                         {input.tags.map((tag) => (<div className='tag' key={tag} onClick={deleteTag}>{tag}</div>))}
@@ -277,10 +320,10 @@ const Write = () => {
                     <div className="editor_wrapper">
                         <Editor
                             ref={ref_editor}
-                            initialValue=""//onsole.log(a); let a = 4 + 3;"
+                            initialValue={location.state ? location.state.contents : ''}
                             height="100%"
                             previewStyle="vertical"
-                            //initialEditType='markdown'//'wysiwyg'//'markdown'
+                            initialEditType='wysiwyg'//'markdown'
                             placeholder="당신의 이야기를 적어보세요...."
                             hideModeSwitch={true}
                             plugins={[colorSyntax, [codeSyntaxHighlight, { highlighter: Prism }]]}
@@ -288,13 +331,13 @@ const Write = () => {
                         />
                     </div>
                     <div className="below_bar">
-                        <div className="exit" onClick={() => navigate('/')}>
+                        <div className="exit" onClick={() => navigate(-1)}>
                             <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path></svg>
                             <h3 >나가기</h3>
                         </div>
                         <div>
                             <div className="tmp_save">임시저장</div>
-                            <div className="post" onClick={setDetailModal}>출간하기</div>
+                            <div className="post" onClick={setDetailModal}>{!location.state ? '출간하기' : '수정하기'}</div>
                         </div>
                     </div>
                 </form>
@@ -363,7 +406,7 @@ const Write = () => {
                                 </div>
                                 <div className="btn_wrapper_2">
                                     <div className="cancel" onClick={closeDetailModal}>뒤로</div>
-                                    <div className="upload" onClick={onSubmit}>출간하기</div>
+                                    <div className="upload" onClick={onSubmit}>{!location.state ? '출간하기' : '수정하기'}</div>
                                 </div>
                             </>
                         }
@@ -371,9 +414,9 @@ const Write = () => {
                             <div className="series_form">
                                 <h2>시리즈 설정</h2>
                                 <div className="series_add" ref={ref_series_add}>
-                                    <input className="series_add_form" onKeyPress={(e) => { e.key === 'Enter' && addSeries() }} placeholder="새로운 시리즈 이름을 입력하세요" onFocus={expandSeriesAddForm} onChange={(e) => !isCustomSeriesURL && (series_url_preview.current.value = e.target.value)} />
+                                    <input className="series_add_form" onKeyPress={(e) => { e.key === 'Enter' && addSeries() }} placeholder="새로운 시리즈 이름을 입력하세요" onFocus={expandSeriesAddForm} onChange={(e) => !isCustomSeriesURL && !location.state && (series_url_preview.current.value = e.target.value)} />
                                     <div className="url_preview">
-                                        <div className="fix_url">{`/@${user}/series/`}</div>
+                                        <div className="fix_url">{`/@${user.id}/series/`}</div>
                                         <input className="user_url" onKeyPress={(e) => { e.key === 'Enter' && addSeries() }} onChange={() => setIsCustomSeriesURL(true)} ref={series_url_preview} />
                                     </div>
                                     <div className="add_series_btn_wrapper">

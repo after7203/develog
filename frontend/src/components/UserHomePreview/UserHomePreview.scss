@@ -1,10 +1,14 @@
+.userHomePreview+.userHomePreview {
+    border-top: 1px solid rgb(238, 238, 238);
+}
+
 .userHomePreview {
     display: flex;
     flex-direction: column;
     padding: 2rem 0;
     overflow: hidden;
     padding-top: 6rem;
-    border-top: 1px solid rgb(238, 238, 238);
+
     img {
         min-width: 100%;
         min-height: 25rem;
