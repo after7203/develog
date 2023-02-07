@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 
 app.use('/api/users', require('./routes/users'));
 app.use('/api/board', require('./routes/board'));
+app.use('/api/reply', require('./routes/reply'));
 app.use('/public', express.static('public'));
 
 app.get('/', (req, res) => {
