@@ -36,7 +36,7 @@ const calTimeDiff = isoCreatedTime => {
     }
 
     for (const i = 1; true; i++) {
-        if (createdTime > Date(date.setYear(date.getYear() - 1))) {
+        if (createdTime > Date(date.setYear(date.getFullYear() - 1))) {
             return `${i}년전`;
         }
     }

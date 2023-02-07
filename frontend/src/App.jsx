@@ -11,7 +11,9 @@ const App = () => {
     const [user, setUser] = useState(null)
     useEffect(() => {
         const storage = JSON.parse(localStorage.getItem("user") || sessionStorage.getItem("user"))
-        fetchUser(storage._id, storage.token)
+        if (storage) {
+            fetchUser(storage._id, storage.token)
+        }
     }, [])
     const fetchUser = async (_id, token) => {
         axios.defaults.headers.common['Authorization'] = token;

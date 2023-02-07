@@ -15,6 +15,8 @@ import Setting from './views/Setting/Setting';
 import UserHome from './views/UserHome/UserHome';
 import Write from './views/Write/Write';
 import Board from './views/Board/Board';
+import TagSelect from './views/TagSelect/TagSelect';
+import Series from './views/Series/Series';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,8 +25,10 @@ const router = createBrowserRouter(
         <Route element={<Header />}>
           <Route index element={<Home />} />
           <Route path="/setting" element={<Setting />} />
-          <Route path="/:user" element={<UserHome />} />
+          <Route path="/:user_id" element={<UserHome />} />
+          <Route path="/tag/:tag" element={<TagSelect />} />
           <Route path="/:writer/:boardURL" element={<Board />} />
+          <Route path="/:user/series/:series_url" element={<Series />} />
         </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/write" element={<Write />} />

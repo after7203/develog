@@ -1,12 +1,15 @@
 import axios from 'axios'
-import { useRef, useState } from 'react'
+import { useContext, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { userContext } from '../../App'
 import calTimeDiff from '../../utils/calTimeDiff'
 import './ReReply.scss'
 
 const ReReply = ({ reply, getBoard }) => {
-    const user = localStorage.getItem("user") || sessionStorage.getItem("user")
+    const { user } = useContext(userContext)
     const [isRevise, setIsRevise] = useState(false)
     const revise_textarea = useRef()
+    const navigate = useNavigate()
     const ResizeReviseform = () => {
         revise_textarea.current.style.height = 'auto';
         revise_textarea.current.style.height = revise_textarea.current.scrollHeight - 20 + 'px';
@@ -26,13 +29,13 @@ const ReReply = ({ reply, getBoard }) => {
         <div className='re_reply'>
             <div className="header">
                 <div className="left">
-                    <img src='https://velog.velcdn.com/images/after7203/profile/2d5b9fac-b879-4451-97a3-54e486942c48/social_profile.png' alt="" />
+                    <img onClick={() => navigate(`/@${reply.writer.id}`)} src={reply.writer.profile} alt="" />
                     <div>
-                        <h3>{reply.writer.id}</h3>
+                        <h3 onClick={() => navigate(`/@${reply.writer.id}`)}>{reply.writer.id}</h3>
                         <h5>{calTimeDiff(reply.createdAt)}</h5>
                     </div>
                 </div>
-                {reply.writer.id === user.id &&
+                {user && reply.writer.id === user.id &&
                     <div className="right">
                         <h5 onClick={() => { setIsRevise(true) }}>수정</h5>
                         <h5 onClick={onDelete}>삭제</h5>

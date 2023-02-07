@@ -4,6 +4,10 @@ const dotenv = require("dotenv")
 dotenv.config();
 
 const auth = (req, res, next) => {
+  if (!req.headers.authorization) {
+    req.decoded = { id: null }
+    return next()
+  }
   try {
     req.decoded = jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
     return next();

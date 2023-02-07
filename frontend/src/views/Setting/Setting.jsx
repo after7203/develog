@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useState } from 'react'
 import { useContext } from 'react'
+import { useRef } from 'react'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { userContext } from '../../App'
@@ -8,6 +9,8 @@ import './Setting.scss'
 
 const Setting = () => {
     const { user, setUser } = useContext(userContext)
+    const [isReviseDescription, setIsReviseDescription] = useState(false)
+    const description_form = useRef()
     // const navigate = useNavigate()
     // useEffect(() => {
     //     if (!(JSON.parse(localStorage.getItem("user") || sessionStorage.getItem("user")))) navigate('/')
@@ -32,6 +35,15 @@ const Setting = () => {
             .catch(e => console.log(e))
         window.location.reload()
     }
+    const reviseDescription = async () => {
+        await axios.put(`${process.env.REACT_APP_SERVER_URI}/api/users/${user._id}/description`, { id: user.id, description: description_form.current.value })
+            .catch(e => console.log(e))
+    }
+    const deleteThumb = async () => {
+        await axios.delete(`${process.env.REACT_APP_SERVER_URI}/api/users/${user._id}/profile`)
+            .catch(e => console.log(e))
+        window.location.reload()
+    }
     return (
         <div className='setting'>
             {
@@ -44,15 +56,28 @@ const Setting = () => {
                             </div>
                             <input id='thumb_input' name='profile' type="file" accept="image/*" onChange={handleProfile} />
                             <label className="upload" htmlFor="thumb_input">이미지 업로드</label>
-                            <div className="delete">이미지 제거</div>
+                            <div className="delete" onClick={deleteThumb}>이미지 제거</div>
                         </div>
                         <div className="right">
                             <h1>{user.id}</h1>
-                            <h4 className='discription'>{'안녕하시어요'}</h4>
-                            <h4 className='revise_btn'>수정</h4>
+                            {!isReviseDescription ?
+                                <>
+                                    <h4 className='discription'>{user.description}</h4>
+                                    <div className='revise_btn_wrapper'>
+                                        <h4 className='revise_btn' onClick={() => setIsReviseDescription(true)}>수정</h4>
+                                    </div>
+                                </>
+                                :
+                                <>
+                                    <input ref={description_form} type='text' defaultValue={user.description} onChange={() => setUser({ ...user, description: description_form.current.value })} />
+                                    <div>
+                                        <div onClick={() => { reviseDescription(); setIsReviseDescription(false) }}>저장</div>
+                                    </div>
+                                </>
+                            }
                         </div>
                     </div>
-                    <div className="velog_title">
+                    {/* <div className="velog_title">
                         <div className="top">
                             <div>
                                 <h2>벨로그 제목</h2>
@@ -63,8 +88,8 @@ const Setting = () => {
                         <div className='description'>
                             개인 페이지의 좌측 상단에 나타나는 페이지 제목입니다.
                         </div>
-                    </div>
-                    <div className="social_info">
+                    </div> */}
+                    {/* <div className="social_info">
                         <div className="top">
                             <h2>소셜 정보</h2>
                             <h4 className='revise_btn'>정보 추가</h4>
@@ -72,7 +97,7 @@ const Setting = () => {
                         <div className='description'>
                             포스트 및 블로그에서 보여지는 프로필에 공개되는 소셜 정보입니다.
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             }
         </div>

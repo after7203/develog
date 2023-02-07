@@ -67,19 +67,23 @@
                 transition-duration: 0.3s;
             }
 
-            &.article {
-                .article {
+            &.article_btn {
+                .article_btn {
+                    color: rgb(28, 199, 170)
+                }
+
+                // .below_line {
+                //     transform: translateX(-4rem);
+                // }
+            }
+
+            &.series_btn {
+                .series_btn {
                     color: rgb(28, 199, 170)
                 }
 
                 .below_line {
-                    transform: translateX(-8rem);
-                }
-            }
-
-            &.series {
-                .series {
-                    color: rgb(28, 199, 170)
+                    transform: translateX(4rem);
                 }
             }
 
@@ -96,14 +100,55 @@
             .below_line {
                 width: 8rem;
                 height: 2.5rem;
+                transform: translateX(-4rem);
                 position: absolute;
                 border-bottom: 2px solid rgb(28, 199, 170);
                 transition-duration: 0.3s;
             }
         }
 
-        .userHomePreview:first-of-type {
-            background-color: black;
+        .series_wrapper {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+
+            .series {
+                box-sizing: border-box;
+                padding: 0.5rem;
+                width: 23rem;
+                flex-shrink: 0;
+
+                .img_wrapper {
+                    width: 100%;
+                    height: 12.375rem;
+                    margin-bottom: 1rem;
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+
+                        &:hover {
+                            cursor: pointer;
+                            opacity: 0.7;
+                        }
+                    }
+                }
+
+                h3 {
+                    color: #1e1f20;
+                    margin-bottom: 0.5rem;
+                    &:hover {
+                        cursor: pointer;
+                        text-decoration: underline;
+                    }
+                }
+
+                h5 {
+                    font-weight: 400;
+                    margin-bottom: 1rem;
+                }
+            }
         }
     }
 }

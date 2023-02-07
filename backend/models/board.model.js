@@ -9,7 +9,7 @@ const boardSchema = new mongoose.Schema({
     like: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     thumbnail: { type: String, required: true, default: 'public/default/thumbnail.png' },
     tags: [{ type: String }],
-    series: [{ type: String }],
+    series: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Series' }],
     reply: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Reply' }]
 }, { timestamps: true }
 );

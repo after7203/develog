@@ -1,0 +1,12 @@
+.tagSelect {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+
+    .wrapper {
+        box-sizing: border-box;
+        padding: 2rem;
+        width: 50rem;
+        height: 100%;
+    }
+}

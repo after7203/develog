@@ -1,0 +1,64 @@
+.series_jsx {
+    width: 50rem;
+    margin: auto;
+    margin-top: 10rem;
+
+    h1 {
+        padding-bottom: 2rem;
+        border-bottom: 1px solid #e0e0e0;
+        margin-bottom: 7rem;
+    }
+
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 2rem;
+
+        .name {
+            display: flex;
+            margin-bottom: 1rem;
+
+            .index {
+                color: #8d8d8d;
+                margin-right: 0.5rem;
+            }
+
+            h3 {
+                color: #272727;
+
+                &:hover {
+                    cursor: pointer;
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .contents {
+            display: flex;
+
+            .left {
+                width: 16rem;
+                height: 9rem;
+                margin-right: 1rem;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            .right {
+                padding: 1rem;
+                >h4 {
+                    color: #272727;
+                    font-weight: 200;
+                }
+            }
+        }
+    }
+}

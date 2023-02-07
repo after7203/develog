@@ -6,10 +6,12 @@ const auth = require('../middleware/auth');
 const Board = require('../models/board.model');
 const Reply = require('../models/reply.model');
 const User = require('../models/user.model');
+const Series = require('../models/series.model');
 const upload = multer({
     storage: multer.diskStorage({ // 저장한공간 정보 : 하드디스크에 저장
         destination(req, file, done) { // 저장 위치
-            const dir = `public/users/${req.decoded.id}/board/${req.params.boardURL}/contents`
+            const { url } = JSON.parse(decodeURIComponent(req.headers.data))
+            const dir = `public/users/${req.decoded.id}/board/${url}/contents`
             if (!fs.existsSync(dir)) {
                 fs.mkdirSync(dir, { recursive: true });
             }
@@ -23,7 +25,7 @@ const upload = multer({
 
 router.get("/", async (req, res) => {
     try {
-        const boards = await Board.find().populate('writer').populate('reply', 'reply')
+        const boards = await Board.find({ tags: req.query.tag, scope: 'public' }).populate('writer').populate('reply', 'reply').sort({ createdAt: -1 })
         return res.status(200).json({
             boards: boards
         });
@@ -34,10 +36,42 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.get("/:writer", async (req, res) => {
+router.get("/trend", async (req, res) => {
+    try {
+        const boards = await Board.find({ createdAt: { $gte: req.query.period }, scope: 'public' }).populate('writer').populate('reply', 'reply').sort({ like: -1, createAt: -1 })
+        return res.status(200).json({
+            boards: boards
+        });
+    } catch {
+        return res.status(200).json({
+            success: false
+        });
+    }
+});
+
+router.get("/recent", async (req, res) => {
+    try {
+        const boards = await Board.find({ createdAt: { $gte: req.query.period }, scope: 'public' }).populate('writer').populate('reply', 'reply').sort({ createdAt: -1 })
+        return res.status(200).json({
+            boards: boards
+        });
+    } catch {
+        return res.status(200).json({
+            success: false
+        });
+    }
+});
+
+router.get("/:writer", auth, async (req, res) => {
     try {
         const user = await User.findOne({ id: req.params.writer })
-        const boards = await Board.find({ writer: user._id }).populate('writer', 'id').populate('reply', 'reply')
+        let boards;
+        if (req.decoded?.id === req.params.writer) {
+            boards = await Board.find({ writer: user._id }).populate('writer', 'id').populate('reply', 'reply')
+        }
+        else {
+            boards = await Board.find({ writer: user._id, scope: 'public' }).populate('writer', 'id').populate('reply', 'reply')
+        }
         return res.status(200).json({
             boards: boards
         });
@@ -49,10 +83,13 @@ router.get("/:writer", async (req, res) => {
     }
 });
 
-router.get("/:writer/:boardURL", async (req, res) => {
+router.get("/:writer/:boardURL", auth, async (req, res) => {
     try {
         const user = await User.findOne({ id: req.params.writer })
-        const board = await Board.findOne({ writer: user._id, url: req.params.boardURL }).populate('writer').populate({ path: 'reply', populate: [{ path: 'writer', select: 'id' }, { path: 'reply', populate: { path: 'writer', select: 'id' } }] })
+        const board = await Board.findOne({ writer: user._id, url: req.params.boardURL }).populate('writer').populate('series').populate({ path: 'reply', populate: [{ path: 'writer', select: 'id profile' }, { path: 'reply', populate: { path: 'writer', select: 'id profile' } }] })
+        if (board.scope === 'private' && req.decoded?.id !== board.writer.id) {
+            return res.json({ private: true })
+        }
         // console.log(board)
         const fs = require("fs").promises
         const contents = await fs.readFile(`public/users/${req.params.writer}/board/${req.params.boardURL}/contents/contents.txt`, 'utf8', function (err, data) {
@@ -76,7 +113,7 @@ router.get("/:writer/:boardURL", async (req, res) => {
 });
 
 router.post("/:writer/:boardURL", auth, upload.array('files'), async (req, res) => {
-    const { writer, title, tags, brief, scope, url, series, thumbnail } = JSON.parse(decodeURIComponent(req.headers.data))
+    const { writer, title, tags, brief, scope, url, added_series, removed_series, series, thumbnail } = JSON.parse(decodeURIComponent(req.headers.data))
     if (req.decoded.id !== writer) return
     const data = {
         writer: req.headers.mongoose_id,
@@ -89,20 +126,21 @@ router.post("/:writer/:boardURL", auth, upload.array('files'), async (req, res) 
         thumbnail: thumbnail
     }
     try {
-        await Board.create(data)
+        const board = await Board.create(data)
+        await Series.updateMany({ _id: { $in: added_series } }, { $push: { boards: board._id } })
+        return res.status(200).json({
+            success: true
+        });
     } catch (e) {
         console.log(e)
         return res.status(200).json({
             success: false
         });
     }
-    return res.status(200).json({
-        success: true
-    });
 });
 
 router.put("/:boardId/", auth, upload.array('files'), async (req, res) => {
-    const { writer, title, tags, brief, scope, url, series, thumbnail, _id } = JSON.parse(decodeURIComponent(req.headers.data))
+    const { writer, title, tags, brief, scope, url, series, added_series, deleted_series, thumbnail, _id } = JSON.parse(decodeURIComponent(req.headers.data))
     if (req.decoded.id !== writer) return
     const data = {
         writer: req.headers.mongoose_id,
@@ -116,6 +154,8 @@ router.put("/:boardId/", auth, upload.array('files'), async (req, res) => {
     }
     try {
         await Board.updateOne({ _id: _id }, { $set: data })
+        await Series.updateMany({ _id: { $in: added_series } }, { $addToSet: { boards: _id } })
+        await Series.updateMany({ _id: { $in: deleted_series } }, { $pull: { boards: _id } })
         return res.status(200).json({
             success: true
         })

@@ -14,7 +14,7 @@ const Register = () => {
     const navigate = useNavigate()
     const { user, setUser } = useContext(userContext)
 
-    useEffect(()=>{
+    useEffect(() => {
         document.getElementsByTagName('title')[0].innerText = '회원가입'
     })
 
@@ -57,14 +57,14 @@ const Register = () => {
                 <input type="text" placeholder="아이디를 입력하세요" {...register("id")}></input>
                 <h5>{errorID}</h5>
                 <h4>비밀번호</h4>
-                <input type="password" placeholder="비밀번호를 입력하세요" {...register("pw")}></input>
+                <input type="password" autoComplete="off" placeholder="비밀번호를 입력하세요" {...register("pw")}></input>
                 <h5>{errorPw}</h5>
                 <h4>비밀번호 확인</h4>
-                <input type="password" placeholder="비밀번호를 한번 더 입력하세요" {...register("pw_confirm")}></input>
+                <input type="password" autoComplete="off" placeholder="비밀번호를 한번 더 입력하세요" {...register("pw_confirm")}></input>
                 <h5>{errorPwConfirm}</h5>
                 <div className="btn_group">
                     <button className="cancle" onClick={() => navigate("/")}>취소</button>
-                    <button className="ensure" input type="submit" disabled={isSubmitting}>확인</button>
+                    <input className="ensure" type="submit" disabled={isSubmitting} value='확인'></input>
                 </div>
             </form>
         </div>
