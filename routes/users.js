@@ -47,17 +47,22 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
     const { id, pw } = req.body
-    let user = await User.findOne({ id: id })
-    if (user) {
-        user = user.toObject()
-        if (await bcrypt.compare(pw, user.pw)) {
-            user.token = await jwt.sign({ id: id }, process.env.JWT_SECRET)
-            return res.json({
-                user: user
-            })
+    try {
+        let user = await User.findOne({ id: id })
+        if (user) {
+            user = user.toObject()
+            if (await bcrypt.compare(pw, user.pw)) {
+                user.token = await jwt.sign({ id: id }, process.env.JWT_SECRET)
+                return res.json({
+                    user: user
+                })
+            }
         }
-    }
-    else {
+        else {
+            return res.status(401).send()
+        }
+    } catch (error) {
+        console.log(error)
         return res.status(401).send()
     }
 });
