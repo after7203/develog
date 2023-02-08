@@ -174,7 +174,7 @@ router.put("/:boardId/", auth, upload.array('files'), async (req, res) => {
 router.put("/:boardId/like", auth, async (req, res) => {
     if (req.decoded.id !== req.body.user) throw new Error("mismatch", req.decoded.id, " !== ", req.body.user)
     try {
-        await Board.updateOne({ _id: req.params.boardId }, { $push: { like: req.body.mongooseId } })
+        await Board.updateOne({ _id: req.params.boardId }, { $addToSet: { like: req.body.mongooseId } })
         return res.status(200).json({
             success: true
         })
