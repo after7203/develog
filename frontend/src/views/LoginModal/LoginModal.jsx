@@ -26,6 +26,7 @@ function LoginModal({ loginToggle, toggleLoginModal, loginRef }) {
             return;
         }
         if (res.data) {
+            console.log(res.data)
             setUser(res.data.user)
             if (document.getElementsByClassName('autologin')[0].checked) {
                 localStorage.setItem("user", JSON.stringify(res.data.user));

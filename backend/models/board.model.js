@@ -14,4 +14,9 @@ const boardSchema = new mongoose.Schema({
 }, { timestamps: true }
 );
 
+// boardSchema.pre('find', function (next) {
+//     this.like_count = this.like.length
+//     next();
+// });
+
 module.exports = mongoose.model('Board', boardSchema);

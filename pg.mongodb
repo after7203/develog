@@ -5,4 +5,5 @@
 
 use('develog');
 
-db.boards.deleteMany({});
+//db.boards.updateMany({}, { $unset: {"like_count":true }});
+db.boards.aggregate([{$match: {scope: 'public'}}, {$project: {like_len: {$size: "$like"}}}]).populate('writer')
