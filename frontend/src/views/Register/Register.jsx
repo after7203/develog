@@ -36,13 +36,13 @@ const Register = () => {
             setErrorPwConfirm("비밀번호가 일치하지 않습니다")
         }
         if (id && pw && pw == pw_confirm) {
-            const res = await axios.post(`${process.env.REACT_APP_SERVER_URI}/api/users/register`, { id: id, pw: pw })
-            if (res.data.user) {
+            try {
+                const res = await axios.post(`${process.env.REACT_APP_SERVER_URI}/api/users/register`, { id: id, pw: pw })
                 setUser(res.data.user)
                 sessionStorage.setItem("user", JSON.stringify(res.data.user));
                 navigate("/")
             }
-            else {
+            catch {
                 setErrorID("이미 존재하는 아이디입니다")
             }
         }

@@ -22,6 +22,7 @@ function LoginModal({ loginToggle, toggleLoginModal, loginRef }) {
         if (data.id && data.pw) {
             try {
                 res = await axios.post(`${process.env.REACT_APP_SERVER_URI}/api/users/login`, data)
+                console.log(res)
             } catch {
                 setError(true)
                 return

@@ -41,11 +41,12 @@ router.post("/register", async (req, res) => {
         })
     } catch (e) {
         console.log(e)
-        return res.status(401)
+        return res.status(401).send()
     }
 });
 
 router.post("/login", async (req, res) => {
+    console.log("hi")
     const { id, pw } = req.body
     try {
         let user = await User.findOne({ id: id })
@@ -57,15 +58,17 @@ router.post("/login", async (req, res) => {
                     user: user
                 })
             }
+            else {
+                throw new Error('invalid user')
+            }
         }
         else {
-            console.log(1)
-            return res.status(401).send()
+            throw new Error('invalid user')
         }
     } catch (error) {
-        console.log(2)
-        console.log(error)
-        return res.status(401).send()
+        return res.status(200).json({
+            error
+        })
     }
 });
 
