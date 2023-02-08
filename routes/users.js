@@ -57,12 +57,14 @@ router.post("/login", async (req, res) => {
                     user: user
                 })
             }
+            else {
+                throw new Error('invalid user')
+            }
         }
         else {
-            return res.status(401).send()
+            throw new Error('invalid user')
         }
     } catch (error) {
-        console.log(error)
         return res.status(401).send()
     }
 });

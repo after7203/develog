@@ -38,7 +38,11 @@ router.get("/", async (req, res) => {
 
 router.get("/trend", async (req, res) => {
     try {
-        const boards = await Board.find({ createdAt: { $gte: req.query.period }, scope: 'public' }).populate('writer').populate('reply', 'reply').sort({ like: -1, createAt: -1 })
+        const boards = await Board.find({ createdAt: { $gte: req.query.period }, scope: 'public' }).populate('writer').populate('reply', 'reply').sort({ like: -1 })
+        // boards = boards.toObject();
+        //console.log(boards)
+        boards.sort((a, b) => b.like.length - a.like.length || b.createdAt - a.createdAt)
+        //db.boards.aggregate([{$match: {scope: 'public'}}, {$project: {like_len: {$size: "$like"}}}])
         return res.status(200).json({
             boards: boards
         });

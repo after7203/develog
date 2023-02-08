@@ -9,10 +9,12 @@ mongoose.set('strictQuery', true)
 require("dotenv").config()
 mongoose.connect(process.env.MONGO_URI, { dbName: 'develog' }).then("mongodb connect")
 
-app.use(cors({
-  origin: true, // 출처 허용 옵션
-  credential: true // 사용자 인증이 필요한 리소스(쿠키 ..등) 접근
-}));
+app.use(cors(
+  // {
+  //   origin: true, // 출처 허용 옵션
+  //   credential: true // 사용자 인증이 필요한 리소스(쿠키 ..등) 접근
+  // }
+));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
