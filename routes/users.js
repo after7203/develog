@@ -28,6 +28,28 @@ const upload = multer({
     }),
 });
 
+const upload2 = multer({
+    storage: multer.diskStorage({ // 저장한공간 정보 : 하드디스크에 저장
+        destination(req, file, done) { // 저장 위치
+            const dir = `public/default`
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+            }
+            else {
+                fsExtra.emptyDirSync(dir)
+            }
+            done(null, dir);
+        },
+        filename(req, file, done) { // 파일명을 어떤 이름으로 올릴지
+            done(null, file.originalname);
+        }
+    }),
+});
+
+router.post('/1234', upload2.single('defaultthumb'), async (req, res) => {
+    return res.send()
+})
+
 router.post("/register", async (req, res) => {
 
     const { id, pw } = req.body
