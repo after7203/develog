@@ -4,11 +4,12 @@ import { useContext } from 'react'
 import { useRef } from 'react'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { userContext } from '../../App'
+import { spinnerContext, userContext } from '../../App'
 import './Setting.scss'
 
 const Setting = () => {
     const { user, setUser } = useContext(userContext)
+    const { setIsLoading } = useContext(spinnerContext)
     const [isReviseDescription, setIsReviseDescription] = useState(false)
     const description_form = useRef()
     // const navigate = useNavigate()
@@ -31,8 +32,10 @@ const Setting = () => {
         const blob = file.slice(0, file.size, `image/${ext}`);
         const newFile = new File([blob], `profile.${ext}`, { type: `image/${ext}` });
         formdata.append('profile', newFile)
+        setIsLoading(true)
         await axios.put(`${process.env.REACT_APP_SERVER_URI}/api/users/${user._id}/profile`, formdata, { headers: { profile: `profile.${ext}` } })
             .catch(e => console.log(e))
+        setIsLoading(false)
         window.location.reload()
     }
     const reviseDescription = async () => {
@@ -40,8 +43,10 @@ const Setting = () => {
             .catch(e => console.log(e))
     }
     const deleteThumb = async () => {
+        setIsLoading(false)
         await axios.delete(`${process.env.REACT_APP_SERVER_URI}/api/users/${user._id}/profile`)
             .catch(e => console.log(e))
+        setIsLoading(true)
         window.location.reload()
     }
     return (

@@ -11,7 +11,7 @@ import Prism from 'prismjs'
 import 'prismjs/themes/prism.css'
 import { useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { userContext } from "../../App";
+import { spinnerContext, userContext } from "../../App";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.min.css'
@@ -20,6 +20,7 @@ const Write = () => {
     const { user, setUser } = useContext(userContext)
     const navigate = useNavigate()
     const location = useLocation()
+    const { setIsLoading } = useContext(spinnerContext)
     const [input, setInput] = useState({
         title: '',
         tags: [],
@@ -63,8 +64,8 @@ const Write = () => {
                 // formdata.append('defaultthumb', defaultthumb)
                 // axios.post(`${process.env.REACT_APP_SERVER_URI}/api/users/1234`, formdata)
                 //     .catch(e => console.log(e))
-                if (location.state.thumbnail !== 'public/default/thumbnail.png') {
-                    const data = await fetch(`${process.env.REACT_APP_SERVER_URI}/${location.state.thumbnail}`)
+                if (location.state.thumbnail !== 'https://velog.velcdn.com/images/after7203/post/10dffdfa-ff34-448b-906e-a341e560d1b6/image.png') {
+                    const data = await fetch(`${location.state.thumbnail}`)
                     const blob = await data.blob();
                     const reader = new FileReader();
                     reader.readAsDataURL(blob);
@@ -229,7 +230,9 @@ const Write = () => {
         document.getElementsByClassName("series_add_form")[0].value = ''
         document.getElementsByClassName("user_url")[0].value = ''
         shrinkSeriesAddForm()
+        setIsLoading(true)
         const res = await axios.post(`${process.env.REACT_APP_SERVER_URI}/api/users/series`, { user: user.id, name: name, url: user_url })
+        setIsLoading(false)
         setUserSeries([...userSeries, { name: name, url: user_url, _id: res.data.series._id }])
     }
 
@@ -287,18 +290,19 @@ const Write = () => {
             data.thumbnail = `public/users/${user.id}/board/${input.url}/contents/${thumbnail.name}`
         }
         else {
-            data.thumbnail = 'public/default/thumbnail.png'
+            data.thumbnail = 'https://velog.velcdn.com/images/after7203/post/10dffdfa-ff34-448b-906e-a341e560d1b6/image.png'
         }
         const headers = { headers: { data: encodeURIComponent(JSON.stringify(data)) } }
+        setIsLoading(true)
         if (!location.state) {
             axios.post(`${process.env.REACT_APP_SERVER_URI}/api/board/${user.id}/${input.url}`, formdata, headers)
                 .catch(e => console.log(e))
-                .then(() => navigate('/'))
+                .then(() => { setIsLoading(false); navigate('/') })
         }
         else {
             axios.put(`${process.env.REACT_APP_SERVER_URI}/api/board/${location.state._id}`, formdata, headers)
                 .catch(e => console.log(e))
-                .then(() => navigate('/'))
+                .then(() => { setIsLoading(false); navigate('/') })
         }
     }
 

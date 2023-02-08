@@ -7,12 +7,13 @@ import calTimeDiff from '../../utils/calTimeDiff';
 import { useRef } from 'react';
 import Reply from '../../components/Reply/Reply';
 import { useContext } from 'react';
-import { userContext } from '../../App';
+import { spinnerContext, userContext } from '../../App';
 import { toast, ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.min.css'
 
 const Board = () => {
     let { writer, boardURL } = useParams()
+    const { setIsLoading } = useContext(spinnerContext)
     const { user, setUser } = useContext(userContext)
     writer = writer.substring(1)
     const [board, setBoard] = useState(null)
@@ -44,7 +45,9 @@ const Board = () => {
         }
     }
     const getBoard = () => {
+        setIsLoading(true)
         axios.get(`${process.env.REACT_APP_SERVER_URI}/api/board/${writer}/${boardURL}`).then(res => {
+            setIsLoading(false)
             if (res.data.private) {
                 toast.error("비공개글입니다", { theme: "colored", autoClose: 1500, })
                 navigate('/', {
@@ -74,7 +77,9 @@ const Board = () => {
         })
     }
     const handleDelete = async () => {
+        setIsLoading(true)
         axios.delete(`${process.env.REACT_APP_SERVER_URI}/api/board/${writer}/${boardURL}`).then(() => {
+            setIsLoading(false)
             navigate('/')
         })
     }
@@ -83,6 +88,7 @@ const Board = () => {
         textarea.current.style.height = textarea.current.scrollHeight - 20 + 'px';
     };
     const onSubmitReply = () => {
+        setIsLoading(true)
         axios.post(`${process.env.REACT_APP_SERVER_URI}/api/reply/${board._id}`, { parentBoard: board._id, userId: user.id, mongooseId: user._id, contents: textarea.current.value }).then(() => {
             textarea.current.value = ''
             getBoard()
@@ -91,13 +97,18 @@ const Board = () => {
     const handleLike = () => {
         if (!recommend.current.classList.contains('check')) {
             axios.put(`${process.env.REACT_APP_SERVER_URI}/api/board/${board._id}/like`, { user: user.id, mongooseId: user._id })
+            // const new_like = 
+            // console.log(board.like, new_like)
+            setBoard({ ...board, like: [...board.like, user._id] })
             // recommend.current.classList.add('check')
         }
         else {
             axios.put(`${process.env.REACT_APP_SERVER_URI}/api/board/${board._id}/unlike`, { user: user.id, mongooseId: user._id })
+            // const new_like = 
+            // console.log(board.like, new_like)
+            setBoard({ ...board, like: board.like.filter(_id => _id !== user._id) })
             // recommend.current.classList.remove('check')
         }
-        getBoard()
     }
     return (
         <>

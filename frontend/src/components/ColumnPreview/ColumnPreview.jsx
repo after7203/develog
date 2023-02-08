@@ -23,7 +23,7 @@ const ColumnPreview = ({ writer, board }) => {
                 </div>
             }
             <div className="thumbnail_wrapper">
-                <img src={`${process.env.REACT_APP_SERVER_URI}/${board.thumbnail}`} onClick={() => navigate(`/@${board.writer.id}/${board.url}`)} />
+                <img src={`${board.thumbnail}`} onClick={() => navigate(`/@${board.writer.id}/${board.url}`)} />
             </div>
             <h2 onClick={() => navigate(`/@${board.writer.id}/${board.url}`)}>{board.title}</h2>
             <h4>{board.brief}</h4>

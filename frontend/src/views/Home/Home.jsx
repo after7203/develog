@@ -4,14 +4,17 @@ import {
 import './Home.scss';
 import HomePreview from '../../components/HomePreview/HomePreview';
 import LoginModal from '../LoginModal/LoginModal';
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.min.css'
+import Spinner from '../../components/Spinner/Spinner';
+import { spinnerContext } from '../../App';
 
 function Home() {
   const [boards, setBoards] = useState(null)
+  const { setIsLoading } = useContext(spinnerContext)
   const [isPeriodSelect, setIsPeriodSelect] = useState(false)
   const [select_period, set_select_period] = useState("1달")
   const [select_option, set_select_option] = useState('trend')
@@ -76,16 +79,20 @@ function Home() {
       underline.current.className = 'underline trend'
       trend.current.classList.add('check')
       recent.current.classList.remove('check')
+      setIsLoading(true)
       axios.get(`${process.env.REACT_APP_SERVER_URI}/api/board/trend?period=${calPeriod(select_period)}`).then((res) => {
         setBoards(res.data.boards)
+        setIsLoading(false)
       })
     }
     else if (select_option === 'recent') {
       underline.current.className = 'underline recent'
       trend.current.classList.remove('check')
       recent.current.classList.add('check')
+      setIsLoading(true)
       axios.get(`${process.env.REACT_APP_SERVER_URI}/api/board/recent?period=${calPeriod(select_period)}`).then(res => {
         setBoards(res.data.boards)
+        setIsLoading(false)
       })
     }
   }

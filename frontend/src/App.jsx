@@ -4,11 +4,14 @@ import { useEffect } from "react"
 import { createContext } from "react"
 import { Outlet } from "react-router-dom"
 import "./App.scss"
+import Spinner from "./components/Spinner/Spinner"
 
 export const userContext = createContext()
+export const spinnerContext = createContext()
 
 const App = () => {
     const [user, setUser] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
     useEffect(() => {
         const storage = JSON.parse(localStorage.getItem("user") || sessionStorage.getItem("user"))
         if (storage) {
@@ -27,7 +30,10 @@ const App = () => {
     }
     return (
         <userContext.Provider value={{ user, setUser }}>
-            <Outlet />
+            <spinnerContext.Provider value={{ setIsLoading }}>
+                {isLoading && <Spinner />}
+                <Outlet />
+            </spinnerContext.Provider>
         </userContext.Provider>
     )
 }

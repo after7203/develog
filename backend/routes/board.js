@@ -7,6 +7,8 @@ const Board = require('../models/board.model');
 const Reply = require('../models/reply.model');
 const User = require('../models/user.model');
 const Series = require('../models/series.model');
+const dotenv = require("dotenv")
+dotenv.config();
 const upload = multer({
     storage: multer.diskStorage({ // 저장한공간 정보 : 하드디스크에 저장
         destination(req, file, done) { // 저장 위치
@@ -174,7 +176,7 @@ router.put("/:boardId/", auth, upload.array('files'), async (req, res) => {
 router.put("/:boardId/like", auth, async (req, res) => {
     if (req.decoded.id !== req.body.user) throw new Error("mismatch", req.decoded.id, " !== ", req.body.user)
     try {
-        await Board.updateOne({ _id: req.params.boardId }, { $push: { like: req.body.mongooseId } })
+        await Board.updateOne({ _id: req.params.boardId }, { $addToSet: { like: req.body.mongooseId } })
         return res.status(200).json({
             success: true
         })

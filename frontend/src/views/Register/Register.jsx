@@ -3,11 +3,12 @@ import { useForm } from "react-hook-form";
 import axios from 'axios'
 import "./Register.scss"
 import { useContext, useState } from "react";
-import { userContext } from "../../App";
+import { spinnerContext, userContext } from "../../App";
 import { useEffect } from "react";
 
 const Register = () => {
     const { register, handleSubmit, formState: { isSubmitting }, } = useForm({ mode: "onChange" })
+    const { setIsLoading } = useContext(spinnerContext)
     const [errorID, setErrorID] = useState("")
     const [errorPw, setErrorPw] = useState("")
     const [errorPwConfirm, setErrorPwConfirm] = useState("")
@@ -37,13 +38,16 @@ const Register = () => {
         }
         if (id && pw && pw == pw_confirm) {
             try {
+                setIsLoading(true)
                 const res = await axios.post(`${process.env.REACT_APP_SERVER_URI}/api/users/register`, { id: id, pw: pw })
+                setIsLoading(false)
                 setUser(res.data.user)
                 sessionStorage.setItem("user", JSON.stringify(res.data.user));
                 navigate("/")
             }
             catch {
                 setErrorID("이미 존재하는 아이디입니다")
+                setIsLoading(false)
             }
         }
     }

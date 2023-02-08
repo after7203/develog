@@ -19,7 +19,7 @@ function HomePreview({ board }) {
     return (
         <div className='home-preview' onClick={() => navigate(`/@${writer.id}/${url}`)}>
             <div className='thumb_wrapper'>
-                {thumbnail && <img className='thumbnail' src={`${process.env.REACT_APP_SERVER_URI}/${thumbnail}`} />}
+                {thumbnail && <img className='thumbnail' src={`${thumbnail}`} />}
             </div>
             <div className='title'>{title}</div>
             <div className='brief'>{brief}</div>

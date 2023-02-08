@@ -4,11 +4,12 @@ import { Form, Link, Navigate, useNavigate } from "react-router-dom";
 import "./LoginModal.scss"
 import axios from 'axios'
 import { useState } from "react";
-import { userContext } from "../../App";
+import { spinnerContext, userContext } from "../../App";
 import { useContext } from "react";
 
 function LoginModal({ loginToggle, toggleLoginModal, loginRef }) {
     const { register, handleSubmit, formState: { isSubmitting }, } = useForm()
+    const { setIsLoading } = useContext(spinnerContext)
     const [id, setId] = useState(null)
     const [pw, setPw] = useState(null)
     const [error, setError] = useState(false)
@@ -21,9 +22,11 @@ function LoginModal({ loginToggle, toggleLoginModal, loginRef }) {
         let res = null
         if (data.id && data.pw) {
             try {
+                setIsLoading(true)
                 res = await axios.post(`${process.env.REACT_APP_SERVER_URI}/api/users/login`, data)
-                console.log(res)
+                setIsLoading(false)
             } catch {
+                setIsLoading(false)
                 setError(true)
                 return
             }

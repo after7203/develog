@@ -87,9 +87,7 @@ router.post("/login", async (req, res) => {
             throw new Error('invalid user')
         }
     } catch (error) {
-        return res.status(200).json({
-            error
-        })
+        return res.status(200).send()
     }
 });
 

@@ -1,14 +1,18 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { spinnerContext } from "../../App"
 import './Series.scss'
 
 const Series = () => {
     const [series, setSeries] = useState(null)
     const { user, series_url } = useParams()
+    const { setIsLoading } = useContext(spinnerContext)
     const navigate = useNavigate()
     useEffect(() => {
+        setIsLoading(true)
         axios.get(`${process.env.REACT_APP_SERVER_URI}/api/users/series`, { params: { id: user } }).then((res) => {
+            setIsLoading(false)
             res.data.userSeries.map(series => {
                 if (series.url === series_url) {
                     setSeries(series)
@@ -30,7 +34,7 @@ const Series = () => {
                             </div>
                             <div className="contents">
                                 <div className="left" onClick={() => navigate(`/@${board.writer.id}/${board.url}`)}>
-                                    <img src={`${process.env.REACT_APP_SERVER_URI}/${board.thumbnail}`} alt="" />
+                                    <img src={`${board.thumbnail}`} alt="" />
                                 </div>
                                 <div className="right">
                                     <h4>{board.brief}</h4>
