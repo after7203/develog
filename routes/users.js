@@ -41,7 +41,7 @@ router.post("/register", async (req, res) => {
         })
     } catch (e) {
         console.log(e)
-        return res.status(401)
+        return res.status(401).send()
     }
 });
 
@@ -65,7 +65,9 @@ router.post("/login", async (req, res) => {
             throw new Error('invalid user')
         }
     } catch (error) {
-        return res.status(401).send()
+        return res.status(401).json({
+            error
+        })
     }
 });
 
