@@ -287,7 +287,7 @@ const Write = () => {
         if (thumbPreview) {
             const thumbnail = base64toFile(thumbPreview, "thumbnail")
             formdata.append('files', thumbnail)
-            data.thumbnail = `public/users/${user.id}/board/${input.url}/contents/${thumbnail.name}`
+            data.thumbnail = `${process.env.REACT_APP_SERVER_URI}/public/users/${user.id}/board/${input.url}/contents/${thumbnail.name}`
         }
         else {
             data.thumbnail = 'https://velog.velcdn.com/images/after7203/post/10dffdfa-ff34-448b-906e-a341e560d1b6/image.png'
