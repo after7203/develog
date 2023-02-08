@@ -20,13 +20,17 @@ function LoginModal({ loginToggle, toggleLoginModal, loginRef }) {
         setError(false)
         let res = null
         if (data.id && data.pw) {
-            res = await axios.post(`${process.env.REACT_APP_SERVER_URI}/api/users/login`, data)
+            try {
+                res = await axios.post(`${process.env.REACT_APP_SERVER_URI}/api/users/login`, data)
+            } catch {
+                setError(true)
+                return
+            }
         }
         else {
             return;
         }
         if (res.data) {
-            console.log(res.data)
             setUser(res.data.user)
             if (document.getElementsByClassName('autologin')[0].checked) {
                 localStorage.setItem("user", JSON.stringify(res.data.user));
