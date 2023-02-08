@@ -7,7 +7,7 @@ const boardSchema = new mongoose.Schema({
     scope: { type: String, enum: ['public', 'private'], required: true },
     brief: { type: String },
     like: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    thumbnail: { type: String, required: true, default: 'public/default/thumbnail.png' },
+    thumbnail: { type: String, required: true, default: 'https://velog.velcdn.com/images/after7203/post/10dffdfa-ff34-448b-906e-a341e560d1b6/image.png' },
     tags: [{ type: String }],
     series: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Series' }],
     reply: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Reply' }]

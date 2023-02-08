@@ -7,6 +7,8 @@ const Board = require('../models/board.model');
 const Reply = require('../models/reply.model');
 const User = require('../models/user.model');
 const Series = require('../models/series.model');
+const dotenv = require("dotenv")
+dotenv.config();
 const upload = multer({
     storage: multer.diskStorage({ // 저장한공간 정보 : 하드디스크에 저장
         destination(req, file, done) { // 저장 위치
