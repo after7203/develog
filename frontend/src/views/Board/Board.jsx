@@ -23,6 +23,7 @@ const Board = () => {
     const recommend = useRef()
     const aside_bar = useRef()
     const copy_toast = () => toast.success("클립보드에 복사되었습니다", { theme: "colored", autoClose: 1500, })
+    const invalid_toast = () => toast.error("로그인후 이용해주세요", { theme: "colored", autoClose: 1500, })
     useEffect(() => {
         window.addEventListener('scroll', sticky_scroll);
         if (user) {
@@ -95,6 +96,10 @@ const Board = () => {
         })
     }
     const handleLike = () => {
+        if(!user){
+            invalid_toast()
+            return
+        }
         if (!recommend.current.classList.contains('check')) {
             axios.put(`${process.env.REACT_APP_SERVER_URI}/api/board/${board._id}/like`, { user: user.id, mongooseId: user._id })
             // const new_like = 
