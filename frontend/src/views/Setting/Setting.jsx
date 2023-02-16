@@ -48,8 +48,9 @@ const Setting = () => {
       )
       .then((res) => {
         const updated_data = { ...user, profile: res.data.profile };
-        localStorage.setItem("user", JSON.stringify(updated_data));
-        if (sessionStorage.getItem("user"))
+        if (localStorage.getItem("user"))
+          localStorage.setItem("user", JSON.stringify(updated_data));
+        else if (sessionStorage.getItem("user"))
           sessionStorage.setItem("user", JSON.stringify(updated_data));
       })
       .catch((e) => console.log(e));
