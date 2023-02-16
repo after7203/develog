@@ -134,7 +134,7 @@ router.get("/", async (req, res) => {
   try {
     const user = await User.findOne(
       { id: req.query.id },
-      "_id, id, profile, description, series"
+      "_id id profile description series"
     );
     return res.json({
       user: user,

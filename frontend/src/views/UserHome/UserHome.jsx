@@ -15,9 +15,9 @@ const UserHome = () => {
   const [series, setSeries] = useState(null);
   const [select, setSelect] = useState("boards");
   const menuRef = useRef();
-  const params = useParams();
+  const { user_id } = useParams();
   useEffect(() => {
-    const hostId = params.user_id.substring(1);
+    const hostId = user_id.substring(1);
     axios.defaults.headers.common["Authorization"] = JSON.parse(
       localStorage.getItem("user") || sessionStorage.getItem("user")
     )?.token;
@@ -25,6 +25,7 @@ const UserHome = () => {
     axios
       .get(`${process.env.REACT_APP_SERVER_URI}/api/users?id=${hostId}`)
       .then((res) => {
+        console.log(res.data);
         setHost(res.data.user);
       });
     axios
