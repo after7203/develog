@@ -187,7 +187,9 @@ const Write = () => {
           const end = contents.indexOf('"', start);
           result = contents.substring(start, end - 1);
         }
-        setThumbPreview(result);
+        setThumbPreview(
+          document.querySelector(".toastui-editor.ww-mode img").src ?? null
+        );
       }
       document.getElementsByClassName("brief")[0].value = brief;
       setInput({ ...input, brief: brief, url: url });
