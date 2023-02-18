@@ -179,14 +179,6 @@ const Write = () => {
               .filter((e) => e !== "")[0] || "";
       const url = isCustomURL || location.state ? input.url : input.title;
       if (!isCustomThumb && !location.state) {
-        const contents = ref_editor.current.getInstance().getHTML();
-        let result = null;
-        const tagindex = contents.indexOf("<img");
-        if (tagindex !== -1) {
-          const start = contents.indexOf("data:", tagindex);
-          const end = contents.indexOf('"', start);
-          result = contents.substring(start, end - 1);
-        }
         setThumbPreview(
           document.querySelector(".toastui-editor.ww-mode img").src ?? null
         );
