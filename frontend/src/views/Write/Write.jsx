@@ -180,7 +180,7 @@ const Write = () => {
       const url = isCustomURL || location.state ? input.url : input.title;
       if (!isCustomThumb && !location.state) {
         setThumbPreview(
-          document.querySelector(".toastui-editor.ww-mode img").src ?? null
+          document.querySelector(".toastui-editor.ww-mode img")?.src ?? null
         );
       }
       document.getElementsByClassName("brief")[0].value = brief;
@@ -534,7 +534,7 @@ const Write = () => {
                 </div>
                 <h2>URL 설정</h2>
                 <div className="URL">
-                  <div>/@after7203/</div>
+                  <div>/@{user.id}/</div>
                   <input
                     onChange={(e) => {
                       setIsCustomURL(true);

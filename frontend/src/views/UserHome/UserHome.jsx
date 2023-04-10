@@ -16,6 +16,7 @@ const UserHome = () => {
   const [select, setSelect] = useState("boards");
   const menuRef = useRef();
   const { user_id } = useParams();
+  const navigate = useNavigate();
   useEffect(() => {
     const hostId = user_id.substring(1);
     axios.defaults.headers.common["Authorization"] = JSON.parse(
@@ -102,10 +103,7 @@ const UserHome = () => {
                               navigate(`/${host.id}/series/${series.url}`)
                             }
                           >
-                            <img
-                              src={`${process.env.REACT_APP_SERVER_URI}/${series.boards[0].thumbnail}`}
-                              alt=""
-                            />
+                            <img src={`${series.boards[0].thumbnail}`} alt="" />
                           </div>
                           <h3
                             onClick={() =>

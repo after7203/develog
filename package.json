@@ -5,7 +5,9 @@
     "dev": "cd /projects/develog && concurrently \"cd backend && nodemon index.js\" \"cd frontend && yarn start\" "
   },
   "dependencies": {
+    "@babel/eslint-parser": "^7.21.3",
     "@toast-ui/react-editor": "3.2.2",
+    "babel-eslint": "^10.1.0",
     "concurrently": "^7.6.0"
   }
 }
