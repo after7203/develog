@@ -16,6 +16,8 @@
 ![스크린샷 2023-04-10 201109](https://user-images.githubusercontent.com/48503261/230891021-a9711037-622e-4c4a-80e6-f85925b9553b.png)
 ![스크린샷 2023-04-10 201125](https://user-images.githubusercontent.com/48503261/230890996-31e8902d-ae32-434b-89c6-b4050e0decdb.png)
 <br/><br/><br/>게시물 페이지에서 추천과 댓글, 대댓글을 작성할 수 있습니다.<br/><br/><br/>
+![스크린샷 2023-04-10 205114](https://user-images.githubusercontent.com/48503261/230896510-2062de24-dd01-401c-abc6-50bd709f375c.png)
+<br/><br/><br/>scrollHeight으로 유동적으로 댓글폼의 크기를 설정하였습니다.<br/><br/><br/>
 ![스크린샷 2023-04-10 201425](https://user-images.githubusercontent.com/48503261/230891336-ff92748c-8b70-4809-b0e2-8abe27b628e3.png)
 <br/><br/><br/>유저 페이지에서 해당 유저의 게시글과 시리즈를 볼 수 있습니다.<br/><br/><br/>
 ![스크린샷 2023-04-10 201522](https://user-images.githubusercontent.com/48503261/230891423-f7024c0e-b994-4317-8e98-774e5cf2452e.png)
