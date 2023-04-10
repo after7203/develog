@@ -4,6 +4,8 @@
 `회원가입` `로그인` `게시글` `댓글` `대댓글` `추천` `프로필설정` `시리즈` <br/><br/><br/><br/>
 ![image](https://user-images.githubusercontent.com/48503261/230884327-d5981d95-2c00-4064-8282-24186ba848d9.jpg)
 <br/><br/><br/>MERN스택으로 만들어보았습니다.<br/><br/><br/>
+![스피너](https://user-images.githubusercontent.com/48503261/230897811-52284964-c303-4efc-a53b-bee38c68443c.gif)
+<br/><br/><br/>로딩중에 스피너가 돌아갑니다.<br/>
 ![회원가입](https://user-images.githubusercontent.com/48503261/230887202-d3bb4641-f271-4a2b-b14e-0bf2db6ff382.png)
 ![로그인](https://user-images.githubusercontent.com/48503261/230887494-51bf129f-c3e3-4789-a36b-7047f71b28d8.png)
 <br/><br/><br/>회원가입 페이지와, 로그인 모달입니다.<br/>
